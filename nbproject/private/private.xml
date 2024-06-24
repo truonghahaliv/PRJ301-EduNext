@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/dao/AnswerDao.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/model/Answer.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/ListUser.jsp</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/controller/admin/UpdateUserController.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/controller/admin/ListUserController.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/controller/user/LoginController.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/controller/admin/DashBoardController.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/dao/ClassDao.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/controller/user/HomeController.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/model/Question.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/dao/UserDao.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/dao/CourseDao.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/model/Grade.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/SideBarAdmin.jsp</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/model/Assignment.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/context/DBContext.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/model/Course.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/model/Lesson.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/Register.jsp</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/dao/GradeDao.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/model/Class.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/DashBoard.jsp</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/Footer.jsp</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/Header.jsp</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/dao/LessonDao.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/dao/AssignmentDao.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/dao/QuestionDao.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/controller/user/LogoutController.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/UpdateUser.jsp</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/Home.jsp</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/model/User.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/src/java/controller/user/RegisterController.java</file>
+            <file>file:/E:/FPTU/KI4/PRJ_EduNext/web/Login.jsp</file>
+        </group>
+    </open-files>
+</project-private>
