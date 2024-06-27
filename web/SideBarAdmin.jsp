@@ -36,7 +36,7 @@
         <li>
             <a href="listUser" class="nav-link sidebarBtn" >
                 <i class="fa-solid fa-user pe-3" style="margin-right: 10px"></i>
-                Customers
+                Users
             </a>
         </li>
     </ul>

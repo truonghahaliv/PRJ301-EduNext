@@ -66,12 +66,20 @@ public class UserDao extends DBContext {
     }
 
     // Method to update user role based on user ID
-    public void updateUserRole(int userId, String newRole) {
-        String sql = "UPDATE Users SET role = ? WHERE user_id = ?";
+    public void updateUser(int userId, User user) {
+        String sql = "UPDATE [dbo].[Users]\n" +
+"   SET [username] = ?\n" +
+"      ,[password] = ?\n" +
+"      ,[email] = ?\n" +
+"      ,[role] = ?\n" +
+" WHERE user_id = ?";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
-            statement.setString(1, newRole);
-            statement.setInt(2, userId);
+            statement.setString(1, user.getUsername());
+              statement.setString(2, user.getPassword());
+                statement.setString(3, user.getEmail());
+                  statement.setString(4, user.getRole());
+            statement.setInt(5, userId);
             statement.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, e);

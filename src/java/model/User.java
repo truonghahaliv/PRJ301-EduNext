@@ -31,6 +31,11 @@ public class User {
         this.email = email;
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + '}';
+    }
     
 
     // Getters and Setters
