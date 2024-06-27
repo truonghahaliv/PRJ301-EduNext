@@ -66,17 +66,25 @@
 
                                         <c:if test="${c.role == 'admin'}">
                                             <c:if test="${user.username != c.username}">
-                                                <a href="#" onclick="doDelete('${id}')" class="btn btn-danger">Delete</a>
+                                                <!-- Only allow deletion of other users who are not admins -->
+                                                <c:if test="${user.role != 'admin'}">
+                                                    <a href="#" onclick="doDelete('${id}')" class="btn btn-danger">Delete</a>
+                                                    <a href="updateUser?id=${id}" class="btn btn-warning mr-2">Update</a>
+                                                </c:if>
                                             </c:if>
-
-
-                                            <a href="updateUser?id=${id}" class="btn btn-warning mr-2">Update</a>
-
-
+                                            <!-- Allow the current admin to update their own profile -->
+                                            <c:if test="${user.email == c.email}">
+                                                <a href="updateUser?id=${id}" class="btn btn-warning mr-2">Update</a>
+                                            </c:if>
                                         </c:if>
+
                                         <c:if test="${c.role != 'admin'}">
+                                            <c:if test="${user.username == c.username}">
+                                                <a href="updateUser?id=${id}" class="btn btn-warning mr-2">Update</a>
+                                            </c:if>
                                             <a href="#" onclick="doDelete('${id}')" class="btn btn-danger">Delete</a>
                                         </c:if>
+
                                     </td>
                                 </tr>
                             </c:forEach>

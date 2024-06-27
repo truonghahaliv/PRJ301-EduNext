@@ -29,30 +29,30 @@
                 <%@include file="SideBarAdmin.jsp" %>
             </div>
             <div class="container mt-5">
-                <c:set var="user" value="${requestScope.user}"/>
+              
 
-                <h1 style="margin-bottom: 40px">Update User</h1>
-                <form action="updateUser" method="post">
-                    <input value="${user.userId}" name="id" hidden="">
+                <h1 style="margin-bottom: 40px">Add User</h1>
+                <form action="AddUser" method="post">
+                   
                     <div class="form-row">
 
                         <div class="form-group col-md-5">
 
                             <label for="inputUsername4" style="font-weight: bold">Username: </label>
-                            <input type="text" class="form-control" id="inputUsername4" placeholder="Username"  name="username" value="${user.username}">
+                            <input type="text" class="form-control" id="inputUsername4" placeholder="Username"  name="username">
                         </div>
                         <div class="form-group col-md-5">
                             <label for="inputEmail4" style="font-weight: bold">Email</label>
-                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email"  name="email" value="${user.email}">
+                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email"  name="email" >
                         </div>
                     </div>
                     <div class="form-row">
 
                         <div class="form-group col-md-5">
                             <label for="inputPassword4" style="font-weight: bold">Password</label>
-                            <input type="password" class="form-control" id="inputPassword" placeholder="Password"  name="password" value="${user.password}">
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Password"  name="password" >
                         </div>
-                        <c:if test="${user.role eq 'admin'}" >
+                      
                             <div class="form-group col-md-5">
                                 <label for="role" style="font-weight: bold">Role</label>
                                 <select id="role" class="form-control" name="role" >
@@ -62,31 +62,8 @@
 
                                 </select>
                             </div>
-                        </c:if>
-                        <c:if test="${user.role eq 'teacher'}" >
-                            <div class="form-group col-md-5">
-                                <label for="role" style="font-weight: bold">Role</label>
-                                <select id="role" class="form-control" name="role" >
-                                     <option value="teacher">Teacher</option>
-                                    <option value="admin">Admin</option>
-                                   
-                                    <option value="student">Student</option>
-
-                                </select>
-                            </div>
-                        </c:if>
-                        <c:if test="${user.role eq 'student'}" >
-                            <div class="form-group col-md-5">
-                                <label for="role" style="font-weight: bold">Role</label>
-                                <select id="role" class="form-control" name="role" >
-                                     <option value="student">Student</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="teacher">Teacher</option>
-                                   
-
-                                </select>
-                            </div>
-                        </c:if>
+                   
+                       
                     </div>
 
                     <button type="submit" class=" d-flex  btn btn-primary updateBtn">Add To System</button>
