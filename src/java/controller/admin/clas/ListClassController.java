@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.admin;
+package controller.admin.clas;
 
-import dao.UserDao;
+import dao.ClassDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +13,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Class;
 import model.User;
 
 /**
  *
  * @author Dan
  */
-@WebServlet(name="AddUserController", urlPatterns={"/AddUser"})
-public class AddUserController extends HttpServlet {
+@WebServlet(name="ListClassController", urlPatterns={"/ListClass"})
+public class ListClassController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +40,10 @@ public class AddUserController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddUserController</title>");  
+            out.println("<title>Servlet ListClassController</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddUserController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ListClassController at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +60,25 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+       HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
+
+        if (user == null) {
+            response.sendRedirect("login");
+        } else {
+            if (!user.getRole().equals("admin")) {
+                PrintWriter out = response.getWriter();
+                out.print("Access Denied");
+            } else {
+                ClassDao dao = new ClassDao();
+                List<Class> list = dao.getAll();
+
+                request.setAttribute("list", list);
+                request.getRequestDispatcher("ListClass.jsp").forward(request, response);
+            }
+
+        }
     } 
 
     /** 
@@ -70,26 +91,7 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        String role = request.getParameter("role");
-        String realRole = null;
-        UserDao dao = new UserDao();
-   
-           
-            if (role.equals("admin")) {
-                realRole = "admin";
-
-            } else if (role.equals("teacher"))  {
-                realRole = "teacher";
-            }
-            else if (role.equals("student"))  {
-                realRole = "student";
-            }
-            dao.insertUser(new User( username, password, email, realRole));
-            response.sendRedirect("listUser");
+        processRequest(request, response);
     }
 
     /** 

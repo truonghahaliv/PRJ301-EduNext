@@ -22,13 +22,13 @@
             </a>
         </li>
         <li>
-            <a href="listClass" class="nav-link sidebarBtn">
+            <a href="ListClass" class="nav-link sidebarBtn">
                 <i class="fa-solid fa-font-awesome pe-3" style="margin-right: 10px"></i>
                 Class
             </a>
         </li>
         <li>
-            <a href="listCourse" class="nav-link sidebarBtn">
+            <a href="ListCourse" class="nav-link sidebarBtn">
                 <i class="fa-solid fa-book pe-3" style="margin-right: 10px"></i>
                 Course
             </a>

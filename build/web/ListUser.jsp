@@ -37,13 +37,12 @@
             </div>
             <div class="container" style="margin-top: -20px">
                 <div>
-                    <div class="container">
+                     <div class="container">
                         <a href="AddUser" class="btn  p-2" style="background: #58abff; color: white; margin-bottom: 45px;margin-top: 30px "  >Add New User</a>
                     </div>
                 </div>
                 <div class="container" style="margin-top: -30px">
-                    <a href="list-user" style="text-decoration: none; color: #58abff"><h2 style="color: white">List User</h2></a>
-                    <table class="table table-hover table-bordered">
+<a href="#" style="text-decoration: none; color: #58abff"><h2 style="color: white">List User</h2></a>                    <table class="table table-hover table-bordered">
                         <thead>
                             <tr>
                                 <th scope="col">User ID</th>
