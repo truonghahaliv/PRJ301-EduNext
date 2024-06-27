@@ -34,10 +34,10 @@ public class CourseDao extends DBContext {
         try {
             String sql = "INSERT INTO [dbo].[Courses]\n"
                     + "           ([course_name]\n"
-                    + "           ,[description]\n"
+                    + "           ,[description])\n"
                     + "     VALUES\n"
                     + "           (?\n"
-                    + "           ,?";
+                    + "           ,?)";
 
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setString(1, course.getCourseName());
@@ -47,6 +47,22 @@ public class CourseDao extends DBContext {
         } catch (SQLException e) {
             System.err.println(e);
         }
+    }
+
+    public void updateUser(int userId, Course user) throws SQLException {
+        String sql = "UPDATE [dbo].[Courses]\n"
+                + "   SET [course_name] = ?\n"
+                + "      ,[description] = ?\n"
+
+                + " WHERE course_id = ?";
+
+        PreparedStatement statement = connect.prepareStatement(sql);
+        statement.setString(1, user.getCourseName());
+        statement.setString(2, user.getDescription());
+      
+        statement.setInt(3, userId);
+        statement.executeUpdate();
+
     }
 
     public List<Course> paging(int page) {
@@ -112,8 +128,6 @@ public class CourseDao extends DBContext {
         }
         return null;
     }
-
-
 
     public List<Course> getAll() {
         List<Course> list = new ArrayList<>();

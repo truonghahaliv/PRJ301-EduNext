@@ -21,7 +21,7 @@ public class ClassDao extends DBContext {
     public void deleteClass(int id) {
         try {
             String sql = "DELETE FROM [dbo].[Classes]\n"
-                    + "      WHERE classid = ?";
+                    + "      WHERE class_id = ?";
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, id);
             stm.executeQuery();
@@ -33,24 +33,21 @@ public class ClassDao extends DBContext {
         try {
             String sql = "INSERT INTO [dbo].[Classes]\n"
                     + "           ([course_id]\n"
-                    + "           ,[class_name]\n"
-              
+                    + "           ,[class_name])\n"
                     + "     VALUES\n"
                     + "           (?\n"
-                    + "           ,?\n"
-                    + "           ,\n"
-                    + "		   ?)\n"
-                    + "GO";
+                    + "           ,?)";
+
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, c.getCourseId());
             stm.setString(2, c.getClassName());
 
-            
             stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e);
         }
     }
+
     public List<Class> paging(int page) {
         List<Class> list = new ArrayList<>();
         String sql = "select * from [Classes] order by class_id asc offset ? rows fetch next 7 rows only";
@@ -69,6 +66,21 @@ public class ClassDao extends DBContext {
         } catch (Exception e) {
         }
         return list;
+    }
+
+    public void updateUser(int userId, Class user) throws SQLException {
+        String sql = "UPDATE [dbo].[Classes]\n"
+                + "   SET [course_id] = ?\n"
+                + "      ,[class_name] = ?\n"
+                + " WHERE class_id = ?";
+
+        PreparedStatement statement = connect.prepareStatement(sql);
+        statement.setInt(1, user.getCourseId());
+        statement.setString(2, user.getClassName());
+
+        statement.setInt(3, userId);
+        statement.executeUpdate();
+
     }
 
     public int getTotalClass() {
@@ -109,7 +121,7 @@ public class ClassDao extends DBContext {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Class c = new Class(
-                        rs.getInt(1), rs.getInt(2), rs.getString(3)     );           
+                        rs.getInt(1), rs.getInt(2), rs.getString(3));
                 return c;
             }
         } catch (SQLException e) {
@@ -117,8 +129,6 @@ public class ClassDao extends DBContext {
         }
         return null;
     }
-
-    
 
     public List<Class> getAll() {
         List<Class> list = new ArrayList<>();

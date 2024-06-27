@@ -25,7 +25,7 @@
         <script type="text/javascript">
             function doDelete(id) {
                 if (confirm("are you sure to delete id = " + id)) {
-                    window.location = "DeleteUser?id=" + id;
+                    window.location = "DeleteCourse?id=" + id;
                 }
             }
         </script>
@@ -37,52 +37,33 @@
             </div>
             <div class="container" style="margin-top: -20px">
                 <div>
-                     <div class="container">
-                        <a href="AddUser" class="btn  p-2" style="background: #58abff; color: white; margin-bottom: 45px;margin-top: 30px "  >Add New User</a>
+                    <div class="container">
+                        <a href="AddCourse" class="btn  p-2" style="background: #58abff; color: white; margin-bottom: 45px;margin-top: 30px "  >Add New Course</a>
                     </div>
                 </div>
                 <div class="container" style="margin-top: -30px">
-<a href="#" style="text-decoration: none; color: #58abff"><h2 style="color: white">List User</h2></a>                    <table class="table table-hover table-bordered">
+                    <table class="table table-hover table-bordered">
                         <thead>
                             <tr>
-                                <th scope="col">User ID</th>
-                                <th scope="col">UserName</th>    
-                                <th scope="col">Email</th>                                                         
-                                <th scope="col">Role</th>
+                                <th scope="col">Course ID</th>
+                                <th scope="col">Course Name</th>    
+                                <th scope="col">Description</th>                                                         
+
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach items = "${requestScope.list}" var="c">
-                                <c:set var="id" value="${c.userId}"/> 
+                                <c:set var="id" value="${c.courseId}"/> 
                                 <tr>
                                     <td>${id}</td>
 
-                                    <td>${c.username}</td>
-                                    <td>${c.email}</td>
-                                    <td>${c.getRole()}</td>
+                                    <td>${c.courseName}</td>
+                                    <td>${c.description}</td>
+
                                     <td>
-
-                                        <c:if test="${c.role == 'admin'}">
-                                            <c:if test="${user.username != c.username}">
-                                                <!-- Only allow deletion of other users who are not admins -->
-                                                <c:if test="${user.role != 'admin'}">
-                                                    <a href="#" onclick="doDelete('${id}')" class="btn btn-danger">Delete</a>
-                                                    <a href="updateUser?id=${id}" class="btn btn-warning mr-2">Update</a>
-                                                </c:if>
-                                            </c:if>
-                                            <!-- Allow the current admin to update their own profile -->
-                                            <c:if test="${user.email == c.email}">
-                                                <a href="updateUser?id=${id}" class="btn btn-warning mr-2">Update</a>
-                                            </c:if>
-                                        </c:if>
-
-                                        <c:if test="${c.role != 'admin'}">
-                                            <c:if test="${user.username == c.username}">
-                                                <a href="updateUser?id=${id}" class="btn btn-warning mr-2">Update</a>
-                                            </c:if>
-                                            <a href="#" onclick="doDelete('${id}')" class="btn btn-danger">Delete</a>
-                                        </c:if>
+                                        <a href="UpdateCourse?id=${id}" class="btn btn-warning mr-2">Update</a>
+                                        <a href="#" onclick="doDelete('${id}')" class="btn btn-danger">Delete</a>
 
                                     </td>
                                 </tr>

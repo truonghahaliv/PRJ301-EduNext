@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.user;
+package controller.admin.clas;
 
-import dao.LessonDao;
-import dao.UserDao;
+import dao.ClassDao;
+import dao.CourseDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,15 +13,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.User;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Course;
 
 /**
  *
  * @author Dan
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "UpdateClassController", urlPatterns = {"/UpdateClass"})
+public class UpdateClassController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +43,10 @@ public class LoginController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
+            out.println("<title>Servlet UpdateClassController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateClassController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,9 +64,25 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Login.jsp").forward(request, response);
-        
-        
+
+        String id_raw = request.getParameter("id");
+
+        ClassDao dao = new ClassDao();
+        try {
+            int id = Integer.parseInt(id_raw);
+            System.out.println(id);
+            model.Class course = dao.getClassById(id);
+            System.out.println(course);
+            request.setAttribute("classs", course);
+             CourseDao ddao = new CourseDao();
+                List<Course> list = ddao.getAll();
+
+                request.setAttribute("list", list);
+            request.getRequestDispatcher("UpdateClass.jsp").forward(request, response);
+
+        } catch (Exception e) {
+
+        }
     }
 
     /**
@@ -77,25 +96,21 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        UserDao dao = new UserDao();
-        User user = dao.checkLogin(email, password);
-        
-        if (user == null) {
-            request.setAttribute("message", "The login information you provided is incorrect");
-          request.getRequestDispatcher("Login.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            if(user.getRole().equals("admin")){
-                  response.sendRedirect("dashboard");
-            }
-            if(user.getRole().equals("teacher")){
-                  response.sendRedirect("homeTeacher");
-            }
-//            response.sendRedirect("home");
+      ClassDao dao = new ClassDao();
+           CourseDao ddao = new CourseDao();
+           int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+     String courseName = request.getParameter("cname");
+        System.out.println(name);
+        System.out.println(courseName);
+        Course course = ddao.getCourseByName(courseName);
+     
+        try {
+            dao.updateUser(id, new model.Class(course.getCourseId(),name));
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateClassController.class.getName()).log(Level.SEVERE, null, ex);
         }
+            response.sendRedirect("ListClass");
     }
 
     /**
@@ -108,5 +123,4 @@ public class LoginController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
 }

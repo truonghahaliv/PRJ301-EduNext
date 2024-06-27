@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.admin;
+package controller.admin.clas;
 
+import dao.ClassDao;
+import dao.CourseDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +14,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import java.util.List;
+import model.Course;
+import model.Class;
 /**
  *
  * @author Dan
  */
-@WebServlet(name="DashBoardController", urlPatterns={"/dashboard"})
-public class DashBoardController extends HttpServlet {
+@WebServlet(name="AddClassController", urlPatterns={"/AddClass"})
+public class AddClassController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +39,10 @@ public class DashBoardController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DashBoardController</title>");  
+            out.println("<title>Servlet AddClassController</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DashBoardController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddClassController at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,7 +59,11 @@ public class DashBoardController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       request.getRequestDispatcher("DashBoard.jsp").forward(request, response);
+         CourseDao dao = new CourseDao();
+                List<Course> list = dao.getAll();
+
+                request.setAttribute("list", list);
+      request.getRequestDispatcher("AddClass.jsp").forward(request, response);
     } 
 
     /** 
@@ -68,7 +76,16 @@ public class DashBoardController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+           ClassDao dao = new ClassDao();
+           CourseDao ddao = new CourseDao();
+        String name = request.getParameter("name");
+     String courseName = request.getParameter("cname");
+        System.out.println(name);
+        System.out.println(courseName);
+        Course course = ddao.getCourseByName(courseName);
+     
+         dao.insertClass(new Class(course.getCourseId(),name));
+            response.sendRedirect("ListClass");
     }
 
     /** 

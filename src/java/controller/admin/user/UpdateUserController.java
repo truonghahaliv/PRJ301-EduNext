@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.user;
+package controller.admin.user;
 
-import dao.LessonDao;
 import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,8 +19,8 @@ import model.User;
  *
  * @author Dan
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "UpdateUserController", urlPatterns = {"/updateUser"})
+public class UpdateUserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +39,10 @@ public class LoginController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
+            out.println("<title>Servlet UpdateUserController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateUserController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,9 +60,30 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Login.jsp").forward(request, response);
-        
-        
+//        HttpSession session = request.getSession();
+//        User user = (User) session.getAttribute("user");
+//        if (user == null) {
+//            response.sendRedirect("login");
+//        } else {
+//            if (!user.getRole().equals("admin")) {
+//                PrintWriter out = response.getWriter();
+//                out.print("Access Denied");
+//            } else {
+        String id_raw = request.getParameter("id");
+
+        UserDao dao = new UserDao();
+        try {
+            int id = Integer.parseInt(id_raw);
+            System.out.println(id);
+            User user = dao.getUserById(id);
+            System.out.println(user);
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("UpdateUser.jsp").forward(request, response);
+        } catch (Exception e) {
+
+        }
+//            }
+
     }
 
     /**
@@ -77,25 +97,27 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+
+        String role = request.getParameter("role");
+        String realRole = null;
         UserDao dao = new UserDao();
-        User user = dao.checkLogin(email, password);
-        
-        if (user == null) {
-            request.setAttribute("message", "The login information you provided is incorrect");
-          request.getRequestDispatcher("Login.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            if(user.getRole().equals("admin")){
-                  response.sendRedirect("dashboard");
+   
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (role.equals("admin")) {
+                realRole = "admin";
+
+            } else if (role.equals("teacher"))  {
+                realRole = "teacher";
             }
-            if(user.getRole().equals("teacher")){
-                  response.sendRedirect("homeTeacher");
+            else if (role.equals("student"))  {
+                realRole = "student";
             }
-//            response.sendRedirect("home");
-        }
+            dao.updateUser(id,new User( username, password, email, realRole));
+            response.sendRedirect("listUser");
+         
     }
 
     /**
@@ -108,5 +130,4 @@ public class LoginController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
 }

@@ -17,6 +17,11 @@ public class Course {
     public Course() {
     }
 
+    @Override
+    public String toString() {
+        return "Course{" + "courseId=" + courseId + ", courseName=" + courseName + ", description=" + description + '}';
+    }
+
     public Course(String courseName, String description) {
         this.courseName = courseName;
         this.description = description;
