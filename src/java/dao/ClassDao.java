@@ -148,8 +148,33 @@ public class ClassDao extends DBContext {
         return list;
     }
 
+    public List<Class> getClassUser( int id) {
+        List<Class> list = new ArrayList<>();
+         
+        String sql = "select c.* from\n"
+                + "Classes c join  Courses co on c.course_id = co.course_id\n"
+                + "join Course_User cu on cu.course_id = co.course_id\n"
+                + "join Users u on u.user_id = cu.user_id\n"
+                + "where u.user_id =  ?";
+        try {
+            PreparedStatement statement = connect.prepareStatement(sql);
+             statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+           
+            while (rs.next()) {
+                Class c = new Class(
+                        rs.getInt(1), rs.getInt(2), rs.getString(3)
+                );
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         ClassDao dao = new ClassDao();
-        System.out.println(dao.getClassById(1));
+        System.out.println(dao.getClassUser(3));
     }
 }

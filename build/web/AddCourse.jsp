@@ -42,10 +42,8 @@
                             <label for="inputUsername4" style="font-weight: bold">Course Name </label>
                             <input type="text" class="form-control" id="inputUsername4" placeholder="Course Name"  name="name">
                         </div>
-                        <div class="form-group col-md-5">
-                            <label for="inputEmail4" style="font-weight: bold">Description</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="Description"  name="description" >
-                        </div>
+                        
+                       
                     </div>
                   
 

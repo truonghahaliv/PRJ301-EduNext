@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.ClassCourse;
+import model.CourseUser;
 
 /**
  *
@@ -53,13 +55,12 @@ public class CourseDao extends DBContext {
         String sql = "UPDATE [dbo].[Courses]\n"
                 + "   SET [course_name] = ?\n"
                 + "      ,[description] = ?\n"
-
                 + " WHERE course_id = ?";
 
         PreparedStatement statement = connect.prepareStatement(sql);
         statement.setString(1, user.getCourseName());
         statement.setString(2, user.getDescription());
-      
+
         statement.setInt(3, userId);
         statement.executeUpdate();
 
@@ -147,8 +148,32 @@ public class CourseDao extends DBContext {
         return list;
     }
 
+    public List<ClassCourse> getAllCourseUser(int id) {
+        List<ClassCourse> list = new ArrayList<>();
+        String sql = "select co.course_id, c.class_id , co.course_name, c.class_name, co.description from\n"
+                + "Classes c join  Courses co on c.course_id = co.course_id\n"
+                + "join Course_User cu on cu.course_id = co.course_id\n"
+                + "join Users u on u.user_id = cu.user_id\n"
+                + "where u.user_id =?";
+        try {
+            PreparedStatement statement = connect.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                ClassCourse c = new ClassCourse(
+                         rs.getInt(1), rs.getInt(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5)
+                );
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         CourseDao dao = new CourseDao();
-        System.out.println(dao.getAll());
+        System.out.println(dao.getAllCourseUser(3));
     }
 }
