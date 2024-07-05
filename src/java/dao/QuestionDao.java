@@ -121,8 +121,6 @@ public class QuestionDao extends DBContext {
         return null;
     }
 
-    
-
     public List<Question> getAll() {
         List<Question> list = new ArrayList<>();
         String sql = "select * from Questions";
@@ -141,8 +139,32 @@ public class QuestionDao extends DBContext {
         return list;
     }
 
+    public List<Question> getAllQuestionsUser(int id) {
+        List<Question> list = new ArrayList<>();
+        String sql = "select q.* from Assignments l \n" +
+"join Classes cl on cl.class_id = l.class_id\n" +
+"join Class_User cu on cu.class_id = cu.class_id\n" +
+"join Users u on u.user_id = cu.user_id\n" +
+"join Questions q on q.assignment_id = l.assignment_id\n" +
+"where u.user_id =?";
+        try {
+            PreparedStatement statement = connect.prepareStatement(sql);
+               statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Question c = new Question(
+                        rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4)
+                );
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         QuestionDao dao = new QuestionDao();
-        System.out.println(dao.getAll());
+        System.out.println(dao.getAllQuestionsUser(3));
     }
 }
