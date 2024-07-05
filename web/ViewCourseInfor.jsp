@@ -62,14 +62,15 @@
             </div>
 
 
+
             <c:forEach items="${lesson}" var="l">
                 <c:set var="id" value="${l.lessonId}"/> 
+                <div class="container" >
+                    <div class="row" >
+                        <div class="col-md-12" >
 
-                <div class="container" style="margin-top: 20px">
-                    <div class="row">
-                        <div class="col-md-12">
                             <!-- Content Section -->
-                            <div class="card">
+                            <div class="card" style="margin-top: 20px">
                                 <div class="card-body">
                                     <h5 class="card-title">Slot ${l.slot}</h5>
                                     <p id="lessonContent" class="card-text">${l.lessonContent}</p>
@@ -78,39 +79,41 @@
                                     <div class="card-header">
                                         <h2 class="mb-0">
                                             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseQuestions" aria-expanded="true" aria-controls="collapseQuestions">
-                                                Show Assignment
+                                                Show Question
                                                 <input value="${l.lessonId}" name="id" hidden="">
                                             </button>
                                         </h2>
                                     </div>
                                     <div id="collapseQuestions" class="collapse" aria-labelledby="headingQuestions" data-parent="#questionsAccordion">
                                         <div class="card-body">
-                                            <c:if test="${assignment == null}">
-                                                <p>This Assignment doesnt have question</p>
-                                            </c:if>
-                                            <c:if test="${assignment != null}">
-                                                <c:forEach items="${assignment}" var="a">
-                                                      <c:set var="aid" value="${a.assignmentId}"/> 
-                                                    <a href="ViewAssignment?aid=${aid}">${a.assignmentName}</a> 
-                                                </c:forEach>
-                                            </c:if>
 
+                                            <c:forEach items="${question}" var="q">
+                                                <c:if test="${q.lessonId == l.lessonId}">
+                                                    <c:if test="${q.name == null}">
+                                                        <p>No questions available</p>
+                                                    </c:if>
+                                                    <c:if test="${q.name != null}">
+                                                        <div class="d-flex justify-content-between">
+                                                            <a href="ViewQuestionSlot?id=${q.questionId}">${q.name}</a>
+                                                            <p>${q.status}</p>
+                                                        </div>
+                                                    </c:if>
+                                                </c:if>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
+
                 </div>
-
-
-
-
-
             </c:forEach>
+
+
+
+
+
         </div>
         <!-- Bootstrap CSS -->
 
