@@ -141,9 +141,34 @@ public class AssignmentDao extends DBContext {
         }
         return list;
     }
+    public List<Assignment> getAllByUser(int userId, int lessonId) {
+        List<Assignment> list = new ArrayList<>();
+        String sql = "select a.* from Lessons l \n" +
+"               join Classes cl on cl.class_id = l.class_id\n" +
+"               join Class_User cu on cu.class_id = cu.class_id\n" +
+"              join Users u on u.user_id = cu.user_id\n" +
+"			  join Assignments a on a.assignment_id = cl.class_id\n" +
+"              where u.user_id =  ? and lesson_id = ?";
+        try {
+            PreparedStatement statement = connect.prepareStatement(sql);
+              statement.setInt(1, userId);
+                statement.setInt(2, lessonId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Assignment c = new Assignment(
+                        rs.getInt(1), rs.getInt(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6)
+                );
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
 
     public static void main(String[] args) {
         AssignmentDao dao = new AssignmentDao();
-        System.out.println(dao.getAssignmentById(1));
+        System.out.println(dao.getAllByUser(3, 1));
     }
 }

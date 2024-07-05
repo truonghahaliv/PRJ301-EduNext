@@ -13,11 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author Dan
  */
-public class LessonDao extends DBContext{
+public class LessonDao extends DBContext {
+
     public void deleteLesson(int id) {
         try {
             String sql = "DELETE FROM [dbo].[Lessons]\n"
@@ -117,8 +119,6 @@ public class LessonDao extends DBContext{
         return null;
     }
 
-   
-
     public List<Lesson> getAll() {
         List<Lesson> list = new ArrayList<>();
         String sql = "select * from Lessons";
@@ -137,8 +137,31 @@ public class LessonDao extends DBContext{
         return list;
     }
 
+    public List<Lesson> getAllByUser(int id) {
+        List<Lesson> list = new ArrayList<>();
+        String sql = "  select l.* from Lessons l \n"
+                + "join Classes cl on cl.class_id = l.class_id\n"
+                + "join Class_User cu on cu.class_id = cu.class_id\n"
+                + "join Users u on u.user_id = cu.user_id\n"
+                + "where u.user_id =  ? ";
+        try {
+            PreparedStatement statement = connect.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Lesson c = new Lesson(
+                        rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4)
+                );
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         LessonDao dao = new LessonDao();
-        System.out.println(dao.getAll());
+        System.out.println(dao.getAllByUser(3));
     }
 }
