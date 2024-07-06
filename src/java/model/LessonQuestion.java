@@ -16,13 +16,40 @@ public class LessonQuestion {
     private String name;
     private String content;
     private String status;
-
+String start;
+String end;
     public LessonQuestion() {
     }
 
     @Override
     public String toString() {
         return "LessonQuestion{" + "lessonId=" + lessonId + ", slot=" + slot + ", lessonContent=" + lessonContent + ", questionId=" + questionId + ", name=" + name + ", content=" + content + ", status=" + status + '}';
+    }
+
+    public LessonQuestion(int lessonId, int questionId, String name, String content, String status, String start, String end) {
+        this.lessonId = lessonId;
+        this.questionId = questionId;
+        this.name = name;
+        this.content = content;
+        this.status = status;
+        this.start = start;
+        this.end = end;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public LessonQuestion(int lessonId, int slot, String lessonContent, int questionId, String name, String content, String status) {

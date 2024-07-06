@@ -95,7 +95,15 @@
                                                     <c:if test="${q.name != null}">
                                                         <div class="d-flex justify-content-between">
                                                             <a href="ViewQuestionSlot?id=${q.questionId}">${q.name}</a>
-                                                            <p>${q.status}</p>
+                                                            <c:if test="${q.status eq 'Cancelled'}">
+                                                                <p style="color: #e83e8c;">${q.status}</p>
+                                                            </c:if>
+                                                                 <c:if test="${q.status eq 'Not Start'}">
+                                                                <p >${q.status}</p>
+                                                            </c:if>
+                                                             <c:if test="${q.status eq 'On Going'}">
+                                                               <p style="color: #90EE90;">${q.status}</p>
+                                                            </c:if>
                                                         </div>
                                                     </c:if>
                                                 </c:if>
