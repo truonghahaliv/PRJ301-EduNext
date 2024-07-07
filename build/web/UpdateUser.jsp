@@ -40,18 +40,18 @@
                         <div class="form-group col-md-5">
 
                             <label for="inputUsername4" style="font-weight: bold">Username: </label>
-                            <input type="text" class="form-control" id="inputUsername4" placeholder="Username"  name="username" value="${user.username}">
+                            <input type="text" class="form-control" id="inputUsername4" placeholder="Username" required="" name="username" value="${user.username}">
                         </div>
                         <div class="form-group col-md-5">
                             <label for="inputEmail4" style="font-weight: bold">Email</label>
-                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email"  name="email" value="${user.email}">
+                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email" required="" name="email" value="${user.email}">
                         </div>
                     </div>
                     <div class="form-row">
 
                         <div class="form-group col-md-5">
                             <label for="inputPassword4" style="font-weight: bold">Password</label>
-                            <input type="password" class="form-control" id="inputPassword" placeholder="Password"  name="password" value="${user.password}">
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Password" required="" name="password" value="${user.password}">
                         </div>
                         <c:if test="${user.role eq 'admin'}" >
                             <div class="form-group col-md-5">

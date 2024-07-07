@@ -43,11 +43,11 @@
                         <div class="form-group col-md-5">
 
                             <label for="inputUsername4" style="font-weight: bold">Course Name </label>
-                            <input type="text" class="form-control" id="inputUsername4" placeholder="Course Name"  name="name" value="${course.courseName}">
+                            <input type="text" class="form-control" id="inputUsername4" placeholder="Course Name"  name="name" required="" value="${course.courseName}">
                         </div>
                         <div class="form-group col-md-5">
                             <label for="inputEmail4" style="font-weight: bold">Description</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="Description"  name="description" value="${course.description}" >
+                            <input type="text" class="form-control" id="inputEmail4" placeholder="Description"  name="description" required="" value="${course.description}" >
                         </div>
                     </div>
 

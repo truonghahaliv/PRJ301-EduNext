@@ -40,7 +40,7 @@
                         <div class="form-group col-md-5">
 
                             <label for="inputUsername4" style="font-weight: bold">Class Name </label>
-                            <input type="text" class="form-control" id="inputUsername4" placeholder="Class Name"  name="name" value="${classs.className}">
+                            <input type="text" class="form-control" id="inputUsername4" placeholder="Class Name" required="" name="name" value="${classs.className}">
                         </div>
                         <div class="form-group col-md-5">
 

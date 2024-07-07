@@ -40,7 +40,12 @@
                         <div class="form-group col-md-5">
 
                             <label for="inputUsername4" style="font-weight: bold">Course Name </label>
-                            <input type="text" class="form-control" id="inputUsername4" placeholder="Course Name"  name="name">
+                            <input type="text" class="form-control" id="inputUsername4" placeholder="Course Name" required=""  name="name">
+                        </div>
+                         <div class="form-group col-md-5">
+
+                            <label for="inputUsername4" style="font-weight: bold">Course Description </label>
+                            <input type="text" class="form-control" id="inputUsername4" placeholder="Course Description" required="" name="description">
                         </div>
                         
                        
