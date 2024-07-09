@@ -32,13 +32,14 @@
 
             <div class="row">
                 <div class="col-md-3">
-                    <form id="courseForm1" action="" method="post">
+                    <form >
                         <div class="form-group">
                             <label for="">Filter Activities</label>
-                            <select class="form-control" id="courseSelect1" name="courseSelect" onchange="document.getElementById('courseForm1').submit();">
-                                <c:forEach items="${question}" var="l">
-                                    <option value="${l.status}">${l.status}</option>
-                                </c:forEach>
+                            <select class="form-control" id="courseSelect1" name="courseSelect" ">
+                                
+                                      <option value="">Cancelled</option>
+                                      <option value="">Not Start</option>
+                                      <option value="">On Going</option>
                             </select>
                         </div>
                     </form>
@@ -55,9 +56,9 @@
                             <select class="form-control" id="courseSelect2" name="slot" onchange="document.getElementById('courseForm2').submit();">
                                 <c:forEach items="${lesson}" var="l">
                                     <option value="${l.slot}">Slot ${l.slot}</option>
-                                   
+
                                 </c:forEach>
-                                      <option value="">All Slot </option>
+                                <option value="">All Slot </option>
                             </select>
                         </div>
                     </form>
@@ -97,15 +98,34 @@
                                                     </c:if>
                                                     <c:if test="${q.name != null}">
                                                         <div class="d-flex justify-content-between">
-                                                            <a href="ViewQuestionSlot?id=${q.questionId}">${q.name}</a>
-                                                            <c:if test="${q.status eq 'Cancelled'}">
-                                                                <p style="color: #e83e8c;">${q.status}</p>
+                                                            <c:if test="${student eq 'student'}">
+                                                                <a href="ViewQuestionSlot?id=${q.questionId}">${q.name}</a>
                                                             </c:if>
-                                                            <c:if test="${q.status eq 'Not Start'}">
-                                                                <p >${q.status}</p>
+                                                            <c:if test="${teacher eq 'teacher'}">
+                                                                 <a href="TeacherViewQuestion?id=${q.questionId}">${q.name}</a>
                                                             </c:if>
-                                                            <c:if test="${q.status eq 'On Going'}">
-                                                                <p style="color: #90EE90;">${q.status}</p>
+                                                            <c:if test="${student eq 'student'}">
+                                                                <c:if test="${q.status eq 'Cancelled'}">
+                                                                    <p style="color: #e83e8c;">${q.status}</p>
+                                                                </c:if>
+                                                                <c:if test="${q.status eq 'Not Start'}">
+                                                                    <p >${q.status}</p>
+                                                                </c:if>
+                                                                <c:if test="${q.status eq 'On Going'}">
+                                                                    <p style="color: #90EE90;">${q.status}</p>
+                                                                </c:if>
+                                                            </c:if>
+                                                            <c:if test="${teacher eq 'teacher'}">
+                                                                <form id="f1${q.questionId}" action="change-status" >
+                                                                    <select class="form-control" name="sts" onchange="change(${q.questionId})">
+                                                                        <option ${(q.status=="Cancelled")?'selected':''}  value="Cancelled">Cancelled</option>
+                                                                        <option ${(q.status=="Not Start")?'selected':''} value="Not Start">No Start</option>
+                                                                        <option ${(q.status=="On Going")?'selected':''} value="On Going">On Going</option>
+                                                                    </select>
+                                                                    <input type="hidden" name="id" value="${q.questionId}">
+                                                                    <input type="hidden" name="lid" value="${lid}">
+
+                                                                </form>
                                                             </c:if>
                                                         </div>
                                                     </c:if>
@@ -134,9 +154,12 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
         <script type="text/javascript">
-                                function change() {
-                                    document.getElementById("courseForm").submit();
-                                }
+                                                                        function change() {
+                                                                            document.getElementById("courseForm").submit();
+                                                                        }
+                                                                        function change(id) {
+                                                                            document.getElementById("f1" + id).submit();
+                                                                        }
         </script>
     </body>
 </html>

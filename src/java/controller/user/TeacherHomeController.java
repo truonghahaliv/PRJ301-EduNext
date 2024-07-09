@@ -74,9 +74,6 @@ public class TeacherHomeController extends HttpServlet {
         CourseDao cdao = new CourseDao();
         List<ClassCourse> course = cdao.getAllCourseUser(user.getUserId());
         request.setAttribute("course", course);
-        
-            
-        
         request.getRequestDispatcher("TeacherHome.jsp").forward(request, response);
         }
        

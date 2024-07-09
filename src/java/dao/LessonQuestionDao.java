@@ -28,7 +28,18 @@ public class LessonQuestionDao extends DBContext {
         } catch (SQLException e) {
         }
     }
-    
+    public void updateStatus(int id, String status) {
+        String sql = "UPDATE [dbo].[Lesson_question]\n"
+                + "   SET [status] = ?\n"
+                + " WHERE question_id = ?";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, status);
+            ps.setInt(2, id);
+            ps.executeQuery();
+        } catch (SQLException e) {
+        }
+    }
     public void insertQuestion(LessonQuestion question) {
         try {
             String sql = "INSERT INTO [dbo].[Lesson_question]\n"
