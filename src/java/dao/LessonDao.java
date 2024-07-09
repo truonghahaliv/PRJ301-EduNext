@@ -137,16 +137,17 @@ public class LessonDao extends DBContext {
         return list;
     }
 
-    public List<Lesson> getAllByUser(int id) {
+    public List<Lesson> getAllByUser(int id, String slot) {
         List<Lesson> list = new ArrayList<>();
         String sql = "  select l.* from Lessons l \n"
                 + "join Classes cl on cl.class_id = l.class_id\n"
                 + "join Class_User cu on cu.class_id = cu.class_id\n"
                 + "join Users u on u.user_id = cu.user_id\n"
-                + "where u.user_id =  ? ";
+                + "where u.user_id =  ? and l.slot LIKE ?  ";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
             statement.setInt(1, id);
+            statement.setString(2, "%" + slot + "%");
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Lesson c = new Lesson(
@@ -162,6 +163,6 @@ public class LessonDao extends DBContext {
 
     public static void main(String[] args) {
         LessonDao dao = new LessonDao();
-        System.out.println(dao.getAllByUser(3));
+        System.out.println(dao.getAllByUser(3,"4"));
     }
 }

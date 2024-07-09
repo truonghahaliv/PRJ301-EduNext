@@ -15,6 +15,11 @@ public class AnswerUser {
     int uid;
     String content;
 
+    @Override
+    public String toString() {
+        return "AnswerUser{" + "username=" + username + ", aid=" + aid + ", qid=" + qid + ", uid=" + uid + ", content=" + content + '}';
+    }
+
     public AnswerUser(int aid, int qid, int uid, String content) {
         this.aid = aid;
         this.qid = qid;

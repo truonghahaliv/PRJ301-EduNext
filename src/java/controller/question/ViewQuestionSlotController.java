@@ -14,10 +14,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.AnswerUser;
 import model.LessonQuestion;
 import model.User;
@@ -67,13 +70,23 @@ public class ViewQuestionSlotController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        AnswerUserDao dao = new AnswerUserDao();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        String currentUsername = user.getUsername();
+        request.setAttribute("currentUsername", currentUsername);
         int id = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("id", id);
+        String content = request.getParameter("content");
+
+        if (content != null) {
+            dao.insertAnswer(new AnswerUser(id, user.getUserId(), content));
+        }
+
         LessonQuestionDao adao = new LessonQuestionDao();
         LessonQuestion listAssignments = adao.getQuestionById(id);
         request.setAttribute("question", listAssignments);
-        AnswerUserDao dao = new AnswerUserDao();
+
         if (listAssignments.getStatus().equals("On Going")) {
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
@@ -82,12 +95,12 @@ public class ViewQuestionSlotController extends HttpServlet {
                 // chua cmt
                 if (dao.getComment(user.getUserId()) == null) {
                     request.setAttribute("answer", false);
-                }
-                // cmt r
-                else{
-                     request.setAttribute("answer", true);
+                } // cmt r
+                else {
+                    request.setAttribute("answer", true);
                     List< AnswerUser> answerUsers = dao.getAll();
-                     request.setAttribute("answerUsers", answerUsers);
+                    System.out.println(answerUsers);
+                    request.setAttribute("answerUsers", answerUsers);
                 }
                 // Phân tích cú pháp chuỗi thành LocalDateTime
                 LocalDateTime endDateTime = LocalDateTime.parse(listAssignments.getEnd(), formatter);
@@ -95,6 +108,9 @@ public class ViewQuestionSlotController extends HttpServlet {
                 // So sánh thời gian hiện tại với thời gian kết thúc
                 if (currentDateTime.isAfter(endDateTime)) {
                     System.out.println("Current time is after the end time.");
+                    List< AnswerUser> answerUsers = dao.getAll();
+                 
+                    request.setAttribute("answerUsers", answerUsers);
                     // Đặt thuộc tính "overtime" nếu thời gian hiện tại lớn hơn thời gian kết thúc
                     request.setAttribute("overtime", true);
                 } else {
@@ -108,6 +124,7 @@ public class ViewQuestionSlotController extends HttpServlet {
                 request.setAttribute("overtime", false);
             }
         } else {
+
             request.setAttribute("overtime", false);
         }
 
@@ -125,7 +142,26 @@ public class ViewQuestionSlotController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        AnswerUserDao dao = new AnswerUserDao();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        String currentUsername = user.getUsername();
+        request.setAttribute("currentUsername", currentUsername);
+        int id = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("id", id);
+        String contentUpdate = request.getParameter("contentUpdate");
+       
+       
+        if (contentUpdate != null) {
+            int aid = Integer.parseInt(request.getParameter("aid"));
+              
+            try {
+                dao.updateAnswerUser(aid, new AnswerUser(id, user.getUserId(), contentUpdate));
+                  request.getRequestDispatcher("ViewQuestionSlot.jsp").forward(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewQuestionSlotController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /**

@@ -3,12 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.course;
+package controller.question;
 
-import dao.AssignmentDao;
-import dao.LessonDao;
+import dao.AnswerUserDao;
 import dao.LessonQuestionDao;
-import dao.QuestionDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,18 +16,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Assignment;
-import model.Lesson;
+import model.AnswerUser;
 import model.LessonQuestion;
-import model.Question;
 import model.User;
 
 /**
  *
  * @author Dan
  */
-@WebServlet(name="ViewCourseInforController", urlPatterns={"/ViewCourseInfor"})
-public class ViewCourseInforController extends HttpServlet {
+@WebServlet(name="TeacherViewQuestionController", urlPatterns={"/TeacherViewQuestion"})
+public class TeacherViewQuestion extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -46,10 +42,10 @@ public class ViewCourseInforController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewCourseInforController</title>");  
+            out.println("<title>Servlet TeacherViewQuestion</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewCourseInforController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet TeacherViewQuestion at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,29 +62,19 @@ public class ViewCourseInforController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        AnswerUserDao dao = new AnswerUserDao();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        if(user.getRole().equals("teacher")){
-            request.setAttribute("teacher", "teacher");
-        }
-        else{
-             request.setAttribute("student", "student");
-        }
-        LessonDao ldao = new LessonDao();
-         String slot = request.getParameter("slot");
-        System.out.println("vcl" + slot);
-     
         
-       int id = Integer.parseInt(request.getParameter("id"));
-        LessonQuestionDao adao = new LessonQuestionDao();
-        List<LessonQuestion> listAssignments = adao.getAllQuestionsSlot(id);
+        int id = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("id", id);
+       LessonQuestionDao adao = new LessonQuestionDao();
+        LessonQuestion listAssignments = adao.getQuestionById(id);
         request.setAttribute("question", listAssignments);
-        
-           List<Lesson> listLessons = ldao.getAllByUser(user.getUserId(), slot == null ? "" : slot);
-        request.setAttribute("lesson", listLessons);
-       
-        request.setAttribute("lid", id);
-      request.getRequestDispatcher("ViewCourseInfor.jsp").forward(request, response);
+         List< AnswerUser> answerUsers = dao.getAll();
+                    System.out.println(answerUsers);
+                    request.setAttribute("answerUsers", answerUsers);
+          request.getRequestDispatcher("ViewQuestionTeacher.jsp").forward(request, response);
     } 
 
     /** 
@@ -101,13 +87,7 @@ public class ViewCourseInforController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         
-      
-
-        // In ra giá trị của các tham số
-        
-//        System.out.println("Course Select: " + courseSelect);
-        
+        processRequest(request, response);
     }
 
     /** 
