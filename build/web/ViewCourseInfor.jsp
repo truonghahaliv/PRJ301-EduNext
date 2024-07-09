@@ -32,29 +32,32 @@
 
             <div class="row">
                 <div class="col-md-3">
-                    <form id="courseForm" action="ViewCourseInfor" method="post">
+                    <form id="courseForm1" action="" method="post">
                         <div class="form-group">
                             <label for="">Filter Activities</label>
-                            <select class="form-control" id="courseSelect" name="courseSelect" onchange="document.getElementById('courseForm').submit();">
+                            <select class="form-control" id="courseSelect1" name="courseSelect" onchange="document.getElementById('courseForm1').submit();">
                                 <c:forEach items="${question}" var="l">
-                                    <option value="${l.status}"> ${l.status}</option>
+                                    <option value="${l.status}">${l.status}</option>
                                 </c:forEach>
-
                             </select>
-
                         </div>
-
                     </form>
                 </div>
                 <div class="col-md-3">
-                    <form id="courseForm" action="ViewCourseInfor" method="get">
+                    <form id="courseForm2" action="ViewCourseInfor" method="get">
                         <div class="form-group">
-                            <label for="">Filter Slot</label>
-                            <select class="form-control" id="courseSelect" name="slot" >
+                            <c:forEach items="${lesson}" var="l">
+                                <c:set var="id" value="${l.lessonId}"/> 
+                                <input value="${l.lessonId}" name="id" hidden="">
+                            </c:forEach>
+
+                            <label for="courseSelect2">Filter Slot</label>
+                            <select class="form-control" id="courseSelect2" name="slot" onchange="document.getElementById('courseForm2').submit();">
                                 <c:forEach items="${lesson}" var="l">
                                     <option value="${l.slot}">Slot ${l.slot}</option>
+                                   
                                 </c:forEach>
-
+                                      <option value="">All Slot </option>
                             </select>
                         </div>
                     </form>
@@ -98,11 +101,11 @@
                                                             <c:if test="${q.status eq 'Cancelled'}">
                                                                 <p style="color: #e83e8c;">${q.status}</p>
                                                             </c:if>
-                                                                 <c:if test="${q.status eq 'Not Start'}">
+                                                            <c:if test="${q.status eq 'Not Start'}">
                                                                 <p >${q.status}</p>
                                                             </c:if>
-                                                             <c:if test="${q.status eq 'On Going'}">
-                                                               <p style="color: #90EE90;">${q.status}</p>
+                                                            <c:if test="${q.status eq 'On Going'}">
+                                                                <p style="color: #90EE90;">${q.status}</p>
                                                             </c:if>
                                                         </div>
                                                     </c:if>
@@ -130,7 +133,11 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-
+        <script type="text/javascript">
+                                function change() {
+                                    document.getElementById("courseForm").submit();
+                                }
+        </script>
     </body>
 </html>
 

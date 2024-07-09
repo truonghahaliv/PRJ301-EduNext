@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="model.User" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,6 +19,10 @@
         }
     </style>
     <body>
+        <%
+            User currentUser = (User) session.getAttribute("user");
+            String currentUsername = currentUser.getUsername();
+        %>
         <nav class="navbar navbar-expand-lg navbar-dark bg-orange">
             <a class="navbar-brand" href="#">EduNext</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +37,7 @@
             </div>
         </nav>
         <div class="container mt-4">
-            <h3><strong>(QUESTION)  ${question.name}</strong></h3>
+            <h3><strong>(QUESTION) ${question.name}</strong></h3>
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -44,39 +50,73 @@
                             </div>
                         </div>
                         <c:if test="${question.status eq 'Cancelled'}">
-                            <div style="margin-top: 20px;"> 
+                            <div style="margin-top: 20px;">
                                 <p style="color: #e83e8c;">Discussion time is over.</p>
                             </div>
-                        </c:if>           
+                        </c:if>
                         <c:if test="${question.status == 'On Going'}">
                             <div class="d-flex justify-content-between" style="margin-top: 20px;">
                                 <c:if test="${overtime == 'true'}">
                                     <p style="color: #e83e8c;">Discussion is over </p>
                                 </c:if>
                                 <c:if test="${overtime == 'false'}">
-                                    <p style="color: #e83e8c;">Start time  ${question.start}</p>
-                                    <p style="color: #e83e8c;">End time  ${question.end}</p>
+                                    <p style="color: #e83e8c;">Start time ${question.start}</p>
+                                    <p style="color: #e83e8c;">End time ${question.end}</p>
                                 </c:if>
                             </div>
-                        </c:if>   
+                        </c:if>
                         <c:if test="${question.status == 'Not Start'}">
-                            <div style="margin-top: 20px;"> 
+                            <div style="margin-top: 20px;">
                                 <p style="color: #e83e8c;">This Question is not start.</p>
                             </div>
-                        </c:if>  
+                        </c:if>
                     </div>
                 </div>
             </div>
             <c:if test="${question.status != 'Not Start'}">
-                <c:if test="${answer == 'false'}">
+                <c:if test="${answer == 'false' && overtime == 'false'}">
                     <h5 style="margin-left: 15px">Discussion</h5>
-                    <textarea class="form-control" id="content" name="content" rows="5" style="resize: none; margin-left: 15px"></textarea>
+                    <div class="submit" style="margin-left: 15px">
+                        <form action="ViewQuestionSlot" method="get">
+                            <input value="${id}" name="id" hidden="">
+                            <textarea class="form-control" id="content" name="content" rows="5" style="resize: none;"></textarea>
+                            <div class="d-flex justify-content-end" style="margin-top: 20px">
+                                <button type="submit" class="btn btn-secondary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
                 </c:if>
                 <c:if test="${answer == 'true'}">
-                    <h5 style="margin-left: 15px" >Discussion</h5>
+                    <h5 style="margin-left: 15px">Discussion</h5>
                     <div class="content" style="margin-left: 15px; margin-top: 20px">
                         <c:forEach items="${answerUsers}" var="a">
-                            <div class="content-cmt" style=" margin-top: 30px">
+                            <c:set var="aid" value="${a.aid}"/>
+                            <div class="content-cmt" style="margin-top: 30px">
+                                <div class="mt-2 d-flex justify-content-between">
+                                    <p><strong>${a.username}</strong></p>
+                                    <c:if test="${a.username == currentUsername}">
+                                        <div>
+                                            <a href="#" class="btn btn-sm btn-warning mr-2" onclick="editComment('${a.aid}', '${a.content}')">
+                                                <i class="fas fa-edit"></i> Edit
+
+                                            </a
+                                            >
+                                            <a href="DeleteQuestion?id=${a.aid}" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </a>
+                                        </div>
+                                    </c:if>
+                                </div>
+                                <textarea class="form-control" id="content-${a.aid}" name="content" rows="5" style="resize: none;" readonly>${a.content}</textarea>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:if>
+                <c:if test="${overtime == 'true' && answer == 'false'}">
+                    <h5 style="margin-left: 15px">Discussion</h5>
+                    <div class="content" style="margin-left: 15px; margin-top: 20px">
+                        <c:forEach items="${answerUsers}" var="a">
+                            <div class="content-cmt" style="margin-top: 30px">
                                 <p><strong>${a.username}</strong></p>
                                 <textarea class="form-control" id="content" name="content" rows="5" style="resize: none;" readonly>${a.content}</textarea>
                             </div>
@@ -85,44 +125,48 @@
                 </c:if>
             </c:if>
         </div>
-        <div class="container mt-3">
-            <div class="textarea-container position-relative">
-                <textarea class="form-control" id="editableContent" name="content" rows="5" style="resize: none; margin-left: 15px"></textarea>
-                <div class="dropdown position-absolute" style="top: 5px; right: 5px;">
-                    <i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false" style="cursor: pointer;"></i>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#" id="editBtn"><i class="fas fa-edit"></i> Edit</a>
-                        <a class="dropdown-item" href="#" id="deleteBtn"><i class="fas fa-trash-alt"></i> Delete</a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- jQuery, Popper.js, and Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-      <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const textarea = document.getElementById('editableContent');
-                const editBtn = document.getElementById('editBtn');
-                const deleteBtn = document.getElementById('deleteBtn');
+        <script>
+                                                function editComment(id, content) {
+                                                    var textarea = document.getElementById('content-' + id);
+                                                    textarea.readOnly = false;
+                                                    textarea.focus();
 
-                editBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    textarea.disabled = !textarea.disabled;
-                    editBtn.innerHTML = textarea.disabled ? '<i class="fas fa-edit"></i> Edit' : '<i class="fas fa-save"></i> Save';
-                });
+                                                    var form = document.createElement('form');
+                                                    form.action = '';
+                                                    form.method = 'post';
 
-                deleteBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (confirm('Are you sure you want to delete this content?')) {
-                        textarea.value = '';
-                    }
-                });
-            });
+                                                    var hiddenId = document.createElement('input');
+                                                    hiddenId.type = 'hidden';
+                                                    hiddenId.name = 'aid';
+                                                    hiddenId.value = id;
+
+                                                    var hiddenContent = document.createElement('input');
+                                                    hiddenContent.type = 'hidden';
+                                                    hiddenContent.name = 'contentUpdate';
+                                                    hiddenContent.value = content;
+
+                                                    var submitBtn = document.createElement('button');
+                                                    submitBtn.type = 'submit';
+                                                    submitBtn.className = 'btn btn-sm btn-primary mt-2 btn-group-toggle float-right';
+                                                    submitBtn.textContent = 'Edit';
+
+                                                    form.appendChild(hiddenId);
+                                                    form.appendChild(hiddenContent);
+                                                    form.appendChild(submitBtn);
+
+                                                    textarea.parentNode.appendChild(form);
+
+                                                    textarea.oninput = function () {
+                                                        hiddenContent.value = textarea.value;
+                                                    };
+                                                }
         </script>
+
     </body>
 </html>

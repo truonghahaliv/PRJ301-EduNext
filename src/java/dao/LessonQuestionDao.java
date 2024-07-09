@@ -162,6 +162,6 @@ public class LessonQuestionDao extends DBContext {
     
     public static void main(String[] args) {
         LessonQuestionDao dao = new LessonQuestionDao();
-        System.out.println(dao.getQuestionById(1));
+        System.out.println(dao.getQuestionById(2));
     }
 }

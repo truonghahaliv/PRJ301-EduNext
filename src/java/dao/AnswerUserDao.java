@@ -52,6 +52,22 @@ public class AnswerUserDao extends DBContext {
         }
     }
 
+    public void updateAnswerUser(int id, AnswerUser answerUser) throws SQLException {
+        String sql = "UPDATE [dbo].[Answer_question]\n"
+                + "   SET [question_id] = ?\n"
+                + "      ,[user_id] =?\n"
+                + "      ,[answer_content] = ?\n"
+                + " WHERE answer_id = ?";
+
+        PreparedStatement statement = connect.prepareStatement(sql);
+        statement.setInt(1, answerUser.getQid());
+          statement.setInt(2, answerUser.getUid());
+        statement.setString(3, answerUser.getContent());
+        statement.setInt(4, id);
+        statement.executeUpdate();
+
+    }
+
     public List<Answer> paging(int page) {
         List<Answer> list = new ArrayList<>();
         String sql = "select * from [Answers] order by answer_id asc offset ? rows fetch next 7 rows only";
@@ -122,14 +138,16 @@ public class AnswerUserDao extends DBContext {
 
     public List<AnswerUser> getAll() {
         List<AnswerUser> list = new ArrayList<>();
-        String sql = "select u.username, aq.* from Answer_question aq\n"
-                + "join Users u on u.user_id = aq.user_id";
+        String sql = "SELECT u.username, aq.* \n"
+                + "FROM Answer_question aq\n"
+                + "JOIN Users u ON u.user_id = aq.user_id\n"
+                + "ORDER BY aq.answer_id DESC;";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 AnswerUser c = new AnswerUser(
-                       rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4),
+                        rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4),
                         rs.getString(5)
                 );
                 list.add(c);
