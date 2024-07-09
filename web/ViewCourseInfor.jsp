@@ -95,19 +95,23 @@
                                                     <c:if test="${q.name != null}">
                                                         <div class="d-flex justify-content-between">
                                                             <a href="ViewQuestionSlot?id=${q.questionId}">${q.name}</a>
-                                                            <c:if test="${q.status eq 'Cancelled'}">
-                                                                <p style="color: #e83e8c;">${q.status}</p>
-                                                            </c:if>
-                                                                 <c:if test="${q.status eq 'Not Start'}">
-                                                                <p >${q.status}</p>
-                                                            </c:if>
-                                                             <c:if test="${q.status eq 'On Going'}">
-                                                               <p style="color: #90EE90;">${q.status}</p>
-                                                            </c:if>
+                                                            <form id="f1${q.questionId}" action="change-status" >
+                                                                <select class="form-control" name="sts" onchange="change(${q.questionId})">
+                                                                    <option ${(q.status=="Cancelled")?'selected':''}  value="Cancelled">Cancelled</option>
+                                                                    <option ${(q.status=="Not Start")?'selected':''} value="Not Start">No Start</option>
+                                                                    <option ${(q.status=="On Going")?'selected':''} value="On Going">On Going</option>
+                                                                </select>
+                                                                <input type="hidden" name="id" value="${q.questionId}">
+                                                                <input type="hidden" name="lid" value="${lid}">
+
+                                                            </form>
+
                                                         </div>
                                                     </c:if>
                                                 </c:if>
+                                                <br>
                                             </c:forEach>
+
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +133,12 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+                                                                    function change(id) {
+                                                                        document.getElementById("f1"+id).submit();
+                                                                    }
 
+        </script>
 
     </body>
 </html>

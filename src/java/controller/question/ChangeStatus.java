@@ -3,12 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.course;
+package controller.question;
 
-import dao.AssignmentDao;
-import dao.LessonDao;
 import dao.LessonQuestionDao;
-import dao.QuestionDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,20 +13,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Assignment;
-import model.Lesson;
 import model.LessonQuestion;
-import model.Question;
-import model.User;
 
 /**
  *
- * @author Dan
+ * @author Admin
  */
-@WebServlet(name="ViewCourseInforController", urlPatterns={"/ViewCourseInfor"})
-public class ViewCourseInforController extends HttpServlet {
+@WebServlet(name="ChangeStatus", urlPatterns={"/change-status"})
+public class ChangeStatus extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -46,10 +37,10 @@ public class ViewCourseInforController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewCourseInforController</title>");  
+            out.println("<title>Servlet ChangeStatus</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewCourseInforController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ChangeStatus at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,21 +57,17 @@ public class ViewCourseInforController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        LessonDao ldao = new LessonDao();
-        List<Lesson> listLessons = ldao.getAllByUser(user.getUserId());
-        request.setAttribute("lesson", listLessons);
-        
-       int id = Integer.parseInt(request.getParameter("id"));
-        LessonQuestionDao adao = new LessonQuestionDao();
-        List<LessonQuestion> listAssignments = adao.getAllQuestionsSlot(id);
-        request.setAttribute("question", listAssignments);
-        request.setAttribute("lid", id);
-
-        String slot = request.getParameter("slot");
-//        System.out.println(slot);
-      request.getRequestDispatcher("ViewCourseInfor.jsp").forward(request, response);
+        String id_raw = request.getParameter("id");
+        String lid = request.getParameter("lid");
+        String sts = request.getParameter("sts");
+        try {
+            int id = Integer.parseInt(id_raw);
+            
+            LessonQuestionDao d = new LessonQuestionDao();
+            d.updateStatus(id, sts);
+            response.sendRedirect("ViewCourseInfor?id=" + lid);
+        } catch (NumberFormatException e) {
+        }
     } 
 
     /** 
@@ -93,7 +80,7 @@ public class ViewCourseInforController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 
     /** 
