@@ -2,10 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+package controller.question.teacher;
 
-package controller.question;
-
-import dao.AnswerUserDao;
 import dao.LessonQuestionDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,46 +12,45 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.AnswerUser;
 import model.LessonQuestion;
-import model.User;
 
 /**
  *
  * @author Dan
  */
-@WebServlet(name="TeacherViewQuestionController", urlPatterns={"/TeacherViewQuestion"})
-public class TeacherViewQuestion extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+@WebServlet(name = "AddQuestionController", urlPatterns = {"/AddQuestion"})
+public class AddQuestion extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TeacherViewQuestion</title>");  
+            out.println("<title>Servlet AddQuestion</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TeacherViewQuestion at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddQuestion at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,29 +58,15 @@ public class TeacherViewQuestion extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        AnswerUserDao dao = new AnswerUserDao();
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if(user.getRole().equals("teacher")){
-            request.setAttribute("teacher", "teacher");
-        }
-        else{
-             request.setAttribute("student", "student");
-        }
-        int id = Integer.parseInt(request.getParameter("id"));
-        request.setAttribute("id", id);
-       LessonQuestionDao adao = new LessonQuestionDao();
-        LessonQuestion listAssignments = adao.getQuestionById(id);
-        request.setAttribute("question", listAssignments);
-         List< AnswerUser> answerUsers = dao.getAll();
-                    System.out.println(answerUsers);
-                    request.setAttribute("answerUsers", answerUsers);
-          request.getRequestDispatcher("ViewQuestionTeacher.jsp").forward(request, response);
-    } 
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("lid"));
+        request.setAttribute("lid", id);
+        request.getRequestDispatcher("AddQuestion.jsp").forward(request, response);
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -91,12 +74,32 @@ public class TeacherViewQuestion extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("lid"));
+        String name = request.getParameter("name");
+        String content = request.getParameter("content");
+        String start = request.getParameter("start");
+        String end = request.getParameter("end");
+        String status = request.getParameter("status");
+        String statusReal = null;
+        
+        if (status.equals("Not Start")) {
+            statusReal = "Not Start";
+        }
+        if (status.equals("On Going")) {
+            statusReal = "On Going";
+        }
+        if (status.equals("Cancelled")) {
+            statusReal = "Cancelled";
+        }
+        LessonQuestionDao dao = new LessonQuestionDao();
+        dao.insertQuestion(new LessonQuestion(id, name, content, statusReal, start, end));
+        response.sendRedirect("ListQuestion");
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

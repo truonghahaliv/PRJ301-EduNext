@@ -9,6 +9,7 @@ package model;
  * @author Dan
  */
 public class LessonQuestion {
+
     private int lessonId;
     int slot;
     String lessonContent;
@@ -16,18 +17,38 @@ public class LessonQuestion {
     private String name;
     private String content;
     private String status;
-String start;
-String end;
+    String start;
+    String end;
+
     public LessonQuestion() {
     }
 
     @Override
     public String toString() {
-        return "LessonQuestion{" + "lessonId=" + lessonId + ", slot=" + slot + ", lessonContent=" + lessonContent + ", questionId=" + questionId + ", name=" + name + ", content=" + content + ", status=" + status + '}';
+        return "LessonQuestion{" + "questionId=" + questionId + ", name=" + name + ", content=" + content + ", status=" + status + ", start=" + start + ", end=" + end + '}';
     }
+
+    
 
     public LessonQuestion(int lessonId, int questionId, String name, String content, String status, String start, String end) {
         this.lessonId = lessonId;
+        this.questionId = questionId;
+        this.name = name;
+        this.content = content;
+        this.status = status;
+        this.start = start;
+        this.end = end;
+    }
+
+    public LessonQuestion(String name, String content, String status, String start, String end) {
+        this.name = name;
+        this.content = content;
+        this.status = status;
+        this.start = start;
+        this.end = end;
+    }
+
+    public LessonQuestion(int questionId, String name, String content, String status, String start, String end) {
         this.questionId = questionId;
         this.name = name;
         this.content = content;
@@ -78,7 +99,6 @@ String end;
         this.content = content;
         this.status = status;
     }
-    
 
     public int getLessonId() {
         return lessonId;
@@ -103,8 +123,6 @@ String end;
     public void setLessonContent(String lessonContent) {
         this.lessonContent = lessonContent;
     }
-
-    
 
     public LessonQuestion(int lessionId, String name, String content, String status) {
         this.lessonId = lessionId;
@@ -152,5 +170,5 @@ String end;
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
 }

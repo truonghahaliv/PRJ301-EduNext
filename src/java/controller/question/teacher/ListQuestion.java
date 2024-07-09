@@ -3,9 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.question;
+package controller.question.teacher;
 
-import dao.AnswerUserDao;
 import dao.LessonQuestionDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.AnswerUser;
 import model.LessonQuestion;
 import model.User;
 
@@ -24,8 +22,8 @@ import model.User;
  *
  * @author Dan
  */
-@WebServlet(name="TeacherViewQuestionController", urlPatterns={"/TeacherViewQuestion"})
-public class TeacherViewQuestion extends HttpServlet {
+@WebServlet(name="ListQuestionController", urlPatterns={"/ListQuestion"})
+public class ListQuestion extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +40,10 @@ public class TeacherViewQuestion extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TeacherViewQuestion</title>");  
+            out.println("<title>Servlet ListQuestion</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TeacherViewQuestion at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ListQuestion at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,24 +60,13 @@ public class TeacherViewQuestion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        AnswerUserDao dao = new AnswerUserDao();
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if(user.getRole().equals("teacher")){
-            request.setAttribute("teacher", "teacher");
-        }
-        else{
-             request.setAttribute("student", "student");
-        }
-        int id = Integer.parseInt(request.getParameter("id"));
-        request.setAttribute("id", id);
-       LessonQuestionDao adao = new LessonQuestionDao();
-        LessonQuestion listAssignments = adao.getQuestionById(id);
+       
+         int id = Integer.parseInt(request.getParameter("id"));
+          request.setAttribute("id", id);
+         LessonQuestionDao adao = new LessonQuestionDao();
+        List< LessonQuestion> listAssignments = adao.getAllBySlot(id);
         request.setAttribute("question", listAssignments);
-         List< AnswerUser> answerUsers = dao.getAll();
-                    System.out.println(answerUsers);
-                    request.setAttribute("answerUsers", answerUsers);
-          request.getRequestDispatcher("ViewQuestionTeacher.jsp").forward(request, response);
+       request.getRequestDispatcher("ListQuestion.jsp").forward(request, response);
     } 
 
     /** 
