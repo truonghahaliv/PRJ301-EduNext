@@ -35,8 +35,9 @@
                 <h1 style="margin-bottom: 40px">Update Question</h1>
               
                 <form action="UpdateQuestion" onsubmit="return validateDates()" method="post">
-<!--                     <input value="${lid}" name="lid" hidden="">-->
+                     <input value="${lid}" name="lid" hidden="">
                      <input value="${id}" name="id" hidden="">
+                 
                     <div class="form-row">
 
                         <div class="form-group col-md-5">
@@ -60,14 +61,16 @@
 
                             </select>
                         </div>
+                     
                         <div class="form-group col-md-4">
                             <label for="start" style="font-weight: bold">Start Date</label>
+                           
                             <input type="date" class="form-control" id="start" placeholder="Start Date" value="${lessonQuestion.start}" required name="start">
                             <div id="startError" class="text-danger"></div>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="end" style="font-weight: bold">End Date</label>
-                            <input type="date" class="form-control" id="end" placeholder="End Date" value="${lessonQuestion.start}" required name="end">
+                            <input type="date" class="form-control" id="end" placeholder="End Date" value="${lessonQuestion.end}" required name="end">
                             <div id="endError" class="text-danger"></div>
                         </div>
 
