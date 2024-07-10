@@ -18,12 +18,13 @@ import model.LessonQuestion;
  */
 public class LessonQuestionDao extends DBContext {
 
-    public void deleteQuestion(int id) {
+    public void deleteQuestion(int lid, int id) {
         try {
-            String sql = "DELETE FROM [dbo].[Lesson_question]\n"
-                    + "      WHERE question_id = ?";
+            String sql = "DELETE FROM [dbo].[Lesson_question]\n" +
+"      WHERE lesson_id = ? and question_id = ?";
             PreparedStatement stm = connect.prepareStatement(sql);
-            stm.setInt(1, id);
+            stm.setInt(1, lid);
+             stm.setInt(2, id);
             stm.executeQuery();
         } catch (SQLException e) {
         }
@@ -42,19 +43,45 @@ public class LessonQuestionDao extends DBContext {
         }
     }
 
+    public void updateStatus(int id, LessonQuestion question) {
+        String sql = "UPDATE [dbo].[Lesson_question]\n"
+                + "   SET [lesson_id] =?\n"
+                + "      ,[name] = ?\n"
+                + "      ,[content] = ?\n"
+                + "      ,[status] = ?\n"
+                + "      ,[startdate] = ?\n"
+                + "      ,[enddate] = ?"
+                + " WHERE question_id = ?";
+        try {
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, question.getLessionId());
+            stm.setString(2, question.getName());
+            stm.setString(3, question.getContent());
+            stm.setString(4, question.getStatus());
+            stm.setString(5, question.getStart());
+            stm.setString(6, question.getEnd());
+             stm.setInt(7, id);
+            stm.executeQuery();
+        } catch (SQLException e) {
+        }
+    }
+
     public void insertQuestion(LessonQuestion question) {
         try {
             String sql = "INSERT INTO [dbo].[Lesson_question]\n"
                     + "           ([lesson_id]\n"
                     + "           ,[name]\n"
                     + "           ,[content]\n"
-                    + "           ,[status], [startdate]\n"
+                    + "           ,[status]\n"
+                    + "           ,[startdate]\n"
                     + "           ,[enddate])\n"
                     + "     VALUES\n"
                     + "           (?\n"
                     + "           ,?\n"
                     + "           ,?\n"
-                    + "           ,?,? ,?)";
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?)";
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, question.getLessionId());
             stm.setString(2, question.getName());

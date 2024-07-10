@@ -5,6 +5,7 @@
 
 package controller.question.teacher;
 
+import dao.LessonQuestionDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,12 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.LessonQuestion;
 
 /**
  *
  * @author Dan
  */
-@WebServlet(name="DeleteQuestionController", urlPatterns={"/DeleteQuestion"})
+@WebServlet(name="DeleteQuestionSlotController", urlPatterns={"/DeleteQuestionSlot"})
 public class DeleteQuestionController extends HttpServlet {
    
     /** 
@@ -55,7 +57,18 @@ public class DeleteQuestionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       int lid = Integer.parseInt(request.getParameter("lid"));
+        request.setAttribute("lid", lid);
+      
+        int id = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("id", id);
+        
+         LessonQuestionDao adao = new LessonQuestionDao();
+         adao.deleteQuestion(lid, id);
+        
+        String url  = "ListQuestion?id=" + lid;
+       request.getRequestDispatcher(url).forward(request, response);
+      
     } 
 
     /** 

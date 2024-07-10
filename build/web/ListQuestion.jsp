@@ -22,16 +22,11 @@
                 color: #17a2b8
             }
         </style>
-        <script type="text/javascript">
-            function doDelete(id) {
-                if (confirm("are you sure to delete id = " + id)) {
-                    window.location = "DeleteQuestion?id=" + id;
-                }
-            }
-        </script>
+
     </head>
     <body>
         <div class="d-flex">
+            <c:set var="lid" value="${id}"/> 
             <div>
                 <%@include file="SideBarTeacher.jsp" %>
             </div>
@@ -39,7 +34,7 @@
                 <div>
                     <div class="container">
 
-                        <c:set var="lid" value="${id}"/> 
+
 
                         <a href="AddQuestion?lid=${lid}" class="btn  p-2" style="background: #58abff; color: white; margin-bottom: 45px;margin-top: 30px "  >Add New Question</a>
                     </div>
@@ -58,8 +53,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items = "${requestScope.question}" var="c">
-                                <c:set var="lid" value="${c.lessonId}"/> 
+                            <c:forEach items = "${requestScope.question}" var="c">                         
                                 <c:set var="id" value="${c.questionId}"/> 
                                 <tr>
                                     <td>${id}</td>
@@ -69,8 +63,21 @@
                                     <td>${c.start}</td>
                                     <td>${c.end}</td>
                                     <td>
-                                        <a href="UpdateQuestion?id=${id}" class="btn btn-warning mr-2">Update</a>
-                                        <a href="#" onclick="doDelete('${id}')" class="btn btn-danger">Delete</a>
+
+                                        <div class="container mt-1">
+                                            <form action="UpdateQuestion" method="get" class="d-inline-block">
+                                                <input value="${id}" name="id" type="hidden">
+                                                <input value="${lid}" name="lid" type="hidden">
+                                                <button type="submit" class="btn btn-warning">Update</button>
+                                            </form>
+                                            <form onsubmit="return false;" class="d-inline-block">
+                                                <input value="${id}" name="id" type="hidden">
+                                                <input value="${lid}" name="lid" type="hidden">
+            <button type="button" class="btn btn-danger" onclick="confirmDelete('${id}', '${lid}')">Delete</button>
+                                            </form>
+                                        </div>
+
+
 
                                     </td>
                                 </tr>
@@ -82,6 +89,20 @@
 
             </div>
         </div>
+        <script>
+            function confirmDelete(id, lid) {
+
+                var result = confirm("are you sure to delete id?");
+                if (result) {
+
+                    window.location.href = "DeleteQuestionSlot?id=" + id + "&lid=" + lid;
+
+                } else {
+                    // Người dùng đã chọn Hủy bỏ, không làm gì cả
+                    console.log("Người dùng đã hủy bỏ xóa.");
+                }
+            }
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>

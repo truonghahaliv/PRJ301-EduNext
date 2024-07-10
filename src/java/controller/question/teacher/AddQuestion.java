@@ -76,13 +76,14 @@ public class AddQuestion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("lid"));
+        System.out.println(id);
         String name = request.getParameter("name");
         String content = request.getParameter("content");
         String start = request.getParameter("start");
         String end = request.getParameter("end");
         String status = request.getParameter("status");
         String statusReal = null;
-        
+
         if (status.equals("Not Start")) {
             statusReal = "Not Start";
         }
@@ -92,9 +93,12 @@ public class AddQuestion extends HttpServlet {
         if (status.equals("Cancelled")) {
             statusReal = "Cancelled";
         }
+        System.out.println(new LessonQuestion(id, name, content, statusReal, start, end));
         LessonQuestionDao dao = new LessonQuestionDao();
+        
         dao.insertQuestion(new LessonQuestion(id, name, content, statusReal, start, end));
-        response.sendRedirect("ListQuestion");
+        String url = "ListQuestion?id=" + id;
+        response.sendRedirect(url);
     }
 
     /**
