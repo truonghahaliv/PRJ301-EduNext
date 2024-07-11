@@ -111,8 +111,8 @@ public class UpdateQuestion extends HttpServlet {
         LessonQuestionDao dao = new LessonQuestionDao();
         System.out.println(new LessonQuestion(lid, name, content, statusReal, start, end));
         dao.updateStatus(id, new LessonQuestion(lid, name, content, statusReal, start, end));
-         String url  = "ListQuestion?id=" + id;
-        response.sendRedirect(url);
+         String url  = "ListQuestion?id=" + lid;
+        request.getRequestDispatcher(url).forward(request, response);
     }
 
     /**

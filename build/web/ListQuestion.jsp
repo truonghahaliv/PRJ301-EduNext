@@ -53,12 +53,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items = "${requestScope.question}" var="c">                         
-                                <c:set var="id" value="${c.questionId}"/> 
+
+                            <c:forEach items = "${requestScope.question}" var="c">     
+                           
                                 <tr>
-                                    <td>${id}</td>
+                                    <td>${c.questionId}</td>
                                     <td>${c.name}</td>
-                                    <td>${c.content}</td>
+                                     <td>${c.content}</td>
                                     <td>${c.status}</td>
                                     <td>${c.start}</td>
                                     <td>${c.end}</td>
@@ -66,14 +67,14 @@
 
                                         <div class="container mt-1">
                                             <form action="UpdateQuestion" method="get" class="d-inline-block">
-                                                <input value="${id}" name="id" type="hidden">
+                                                <input value="${c.questionId}" name="id" type="hidden">
                                                 <input value="${lid}" name="lid" type="hidden">
                                                 <button type="submit" class="btn btn-warning">Update</button>
                                             </form>
                                             <form onsubmit="return false;" class="d-inline-block">
-                                                <input value="${id}" name="id" type="hidden">
+                                                <input value="${c.questionId}" name="id" type="hidden">
                                                 <input value="${lid}" name="lid" type="hidden">
-            <button type="button" class="btn btn-danger" onclick="confirmDelete('${id}', '${lid}')">Delete</button>
+                                                <button type="button" class="btn btn-danger" onclick="confirmDelete('${id}', '${lid}')">Delete</button>
                                             </form>
                                         </div>
 

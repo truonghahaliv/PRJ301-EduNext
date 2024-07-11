@@ -5,7 +5,7 @@
 
 package controller.assignment;
 
-import dao.QuestionDao;
+import dao.AssignmentDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,15 +13,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Question;
+import model.Assignment;
 
 /**
  *
  * @author Dan
  */
-@WebServlet(name="ViewQuestionAssignment", urlPatterns={"/ViewQuestionAssignment"})
-public class ViewAssignmentController extends HttpServlet {
+@WebServlet(name="DeleteAssingmentController", urlPatterns={"/DeleteAssignment"})
+public class DeleteAssingmentController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +37,10 @@ public class ViewAssignmentController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewSlotController</title>");  
+            out.println("<title>Servlet DeleteAssingmentController</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewSlotController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteAssingmentController at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,11 +58,9 @@ public class ViewAssignmentController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        QuestionDao dao = new QuestionDao();
-        List<Question> list = dao.getAll(id);
-        request.setAttribute("list", list);
-        request.setAttribute("aid", id);
-       request.getRequestDispatcher("ViewQuestionAssignment.jsp").forward(request, response);
+         AssignmentDao dao = new AssignmentDao();
+         dao.deleteAssignment(id);
+        response.sendRedirect("ListAssignment");
     } 
 
     /** 

@@ -5,7 +5,7 @@
 
 package controller.assignment;
 
-import dao.QuestionDao;
+import dao.AssignmentDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Question;
+import model.Assignment;
 
 /**
  *
  * @author Dan
  */
-@WebServlet(name="ViewQuestionAssignment", urlPatterns={"/ViewQuestionAssignment"})
-public class ViewAssignmentController extends HttpServlet {
+@WebServlet(name="ListAssignmentController", urlPatterns={"/ListAssignment"})
+public class ListAssignment extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +38,10 @@ public class ViewAssignmentController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewSlotController</title>");  
+            out.println("<title>Servlet ListAssignment</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewSlotController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ListAssignment at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,12 +58,10 @@ public class ViewAssignmentController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        QuestionDao dao = new QuestionDao();
-        List<Question> list = dao.getAll(id);
-        request.setAttribute("list", list);
-        request.setAttribute("aid", id);
-       request.getRequestDispatcher("ViewQuestionAssignment.jsp").forward(request, response);
+        AssignmentDao dao = new AssignmentDao();
+        List<Assignment> list = dao.getAll();
+        request.setAttribute("assignment", list);
+        request.getRequestDispatcher("ListAssignment.jsp").forward(request, response);
     } 
 
     /** 

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.LessonQuestion;
+import model.LessonQuestion2;
 
 /**
  *
@@ -85,7 +86,6 @@ public class LessonQuestionDao extends DBContext {
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, question.getLessionId());
             stm.setString(2, question.getName());
-
             stm.setString(3, question.getContent());
             stm.setString(4, question.getStatus());
             stm.setString(5, question.getStart());
@@ -166,13 +166,14 @@ public class LessonQuestionDao extends DBContext {
 
     public List<LessonQuestion> getAll() {
         List<LessonQuestion> list = new ArrayList<>();
-        String sql = "select * from Questions";
+        String sql = "select * from Lesson_question";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 LessonQuestion c = new LessonQuestion(
                         rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5)
+                        ,rs.getString(6), rs.getString(7)
                 );
                 list.add(c);
             }
@@ -182,8 +183,8 @@ public class LessonQuestionDao extends DBContext {
         return list;
     }
 
-    public List<LessonQuestion> getAllBySlot(int id) {
-        List<LessonQuestion> list = new ArrayList<>();
+    public List<LessonQuestion2> getAllBySlot(int id) {
+        List<LessonQuestion2> list = new ArrayList<>();
         String sql = "select lq.question_id,  lq.name, lq.content, lq.status, lq.startdate, lq.enddate\n"
                 + "from Lesson_question lq join Lessons l on lq.lesson_id = l.lesson_id\n"
                 + "where l.lesson_id =  ? ";
@@ -192,7 +193,7 @@ public class LessonQuestionDao extends DBContext {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                LessonQuestion c = new LessonQuestion(
+                LessonQuestion2 c = new LessonQuestion2(
                         rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)
                 );
                 list.add(c);

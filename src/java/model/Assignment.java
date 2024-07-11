@@ -19,6 +19,11 @@ public class Assignment {
     public Assignment() {
     }
 
+    @Override
+    public String toString() {
+        return "Assignment{" + "assignmentId=" + assignmentId + ", classId=" + classId + ", assignmentName=" + assignmentName + ", description=" + description + ", startTime=" + startTime + ", endTime=" + endTime + '}';
+    }
+
     public Assignment(int assignmentId, int classId, String assignmentName, String description, String startTime, String endTime) {
         this.assignmentId = assignmentId;
         this.classId = classId;

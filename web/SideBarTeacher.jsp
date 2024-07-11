@@ -9,12 +9,23 @@
     <ul class="nav nav-pills flex-column mb-auto">
         
         
-       
+        <li>
+            <a href="TeacherHome" class="nav-link sidebarBtn">
+                <i class="fa-solid fa-font-awesome pe-3" style="margin-right: 10px"></i>
+                Home Teacher
+            </a>
+        </li>
         
         <li>
             <a href="ListSlot" class="nav-link sidebarBtn">
                 <i class="fa-solid fa-font-awesome pe-3" style="margin-right: 10px"></i>
                 Slot
+            </a>
+        </li>
+        <li>
+            <a href="ListAssignment" class="nav-link sidebarBtn">
+                <i class="fa-solid fa-font-awesome pe-3" style="margin-right: 10px"></i>
+                Assignment
             </a>
         </li>
          <li>

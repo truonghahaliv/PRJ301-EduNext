@@ -175,6 +175,6 @@ public class ClassDao extends DBContext {
 
     public static void main(String[] args) {
         ClassDao dao = new ClassDao();
-        System.out.println(dao.getClassUser(3));
+        System.out.println(dao.getClassByName("SE1234"));
     }
 }
