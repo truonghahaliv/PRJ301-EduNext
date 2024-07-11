@@ -41,13 +41,12 @@ public class QuestionDao extends DBContext {
                     + "           (?\n"
                     + "           ,?\n"
                     + "           ,\n"
-                    + "		   ?)\n"
-                    + "GO";
+                    + "		   ?)\n";
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, question.getAssignmentId());
-            stm.setString(1, question.getQuestionContent());
+            stm.setString(2, question.getQuestionContent());
 
-            stm.setString(1, question.getStatus());
+            stm.setString(3, question.getStatus());
 
             stm.executeUpdate();
         } catch (SQLException e) {
@@ -121,11 +120,13 @@ public class QuestionDao extends DBContext {
         return null;
     }
 
-    public List<Question> getAll() {
+    public List<Question> getAll(int id) {
         List<Question> list = new ArrayList<>();
-        String sql = "select * from Questions";
+        String sql = "select q.* from Questions q join Assignments a \n" +
+"                on q.assignment_id = a.assignment_id where a.assignment_id = ?";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
+               statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Question c = new Question(
@@ -141,15 +142,15 @@ public class QuestionDao extends DBContext {
 
     public List<Question> getAllQuestionsUser(int id) {
         List<Question> list = new ArrayList<>();
-        String sql = "select q.* from Assignments l \n" +
-"join Classes cl on cl.class_id = l.class_id\n" +
-"join Class_User cu on cu.class_id = cu.class_id\n" +
-"join Users u on u.user_id = cu.user_id\n" +
-"join Questions q on q.assignment_id = l.assignment_id\n" +
-"where u.user_id =?";
+        String sql = "select q.* from Assignments l \n"
+                + "join Classes cl on cl.class_id = l.class_id\n"
+                + "join Class_User cu on cu.class_id = cu.class_id\n"
+                + "join Users u on u.user_id = cu.user_id\n"
+                + "join Questions q on q.assignment_id = l.assignment_id\n"
+                + "where u.user_id =?";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
-               statement.setInt(1, id);
+            statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Question c = new Question(

@@ -15,8 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.LessonQuestion;
-import model.User;
+import model.LessonQuestion2;
 
 /**
  *
@@ -63,8 +62,9 @@ public class ListQuestion extends HttpServlet {
        
          int id = Integer.parseInt(request.getParameter("id"));
           request.setAttribute("id", id);
+          System.out.println(id);
          LessonQuestionDao adao = new LessonQuestionDao();
-        List< LessonQuestion> listAssignments = adao.getAllBySlot(id);
+        List< LessonQuestion2> listAssignments = adao.getAllBySlot(id);
         request.setAttribute("question", listAssignments);
        request.getRequestDispatcher("ListQuestion.jsp").forward(request, response);
     } 

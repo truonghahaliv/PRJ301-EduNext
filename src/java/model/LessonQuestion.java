@@ -28,6 +28,7 @@ public class LessonQuestion {
         return "LessonQuestion{" + "questionId=" + questionId + ", name=" + name + ", content=" + content + ", status=" + status + ", start=" + start + ", end=" + end + '}';
     }
 
+   
     
 
     public LessonQuestion(int lessonId, int questionId, String name, String content, String status, String start, String end) {
@@ -48,14 +49,15 @@ public class LessonQuestion {
         this.end = end;
     }
 
-    public LessonQuestion(int questionId, String name, String content, String status, String start, String end) {
-        this.questionId = questionId;
+    public LessonQuestion(int lessonId, String name, String content, String status, String start, String end) {
+        this.lessonId = lessonId;
         this.name = name;
         this.content = content;
         this.status = status;
         this.start = start;
         this.end = end;
     }
+    
 
     public String getStart() {
         return start;

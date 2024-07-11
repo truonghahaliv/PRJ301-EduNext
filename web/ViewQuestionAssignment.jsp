@@ -33,10 +33,8 @@
             <div class="container" style="margin-top: -20px">
                 <div>
                     <div class="container">
-
-
-
-                        <a href="AddQuestion?lid=${lid}" class="btn  p-2" style="background: #58abff; color: white; margin-bottom: 45px;margin-top: 30px "  >Add New Question</a>
+                            
+                        <a href="AddQuestionAssignment?aid=${aid}" class="btn  p-2" style="background: #58abff; color: white; margin-bottom: 45px;margin-top: 30px "  >Add New Question</a>
                     </div>
                 </div>
                 <div class="container" style="margin-top: -30px">
@@ -44,25 +42,22 @@
                         <thead>
                             <tr>
                                 <th scope="col">Question ID</th>
-                                <th scope="col">Question Name</th>    
-                                <th scope="col">Content</th>
+
+                                <th scope="col"> Question Content</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Start Date</th>
-                                <th scope="col">End Date</th>
+
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            <c:forEach items = "${requestScope.question}" var="c">     
-                           
+                            <c:forEach items = "${requestScope.list}" var="c">     
+
                                 <tr>
-                                    <td>${c.questionId}</td>
-                                    <td>${c.name}</td>
-                                     <td>${c.content}</td>
+                                    <td>${c.questionId}</td>                               
+                                    <td>${c.questionContent}</td>
                                     <td>${c.status}</td>
-                                    <td>${c.start}</td>
-                                    <td>${c.end}</td>
+
                                     <td>
 
                                         <div class="container mt-1">

@@ -29,6 +29,26 @@ public class AssignmentDao extends DBContext {
         }
     }
 
+    public void updateUser(int userId, Assignment assignment) throws SQLException {
+        String sql = "UPDATE [dbo].[Assignments]\n"
+                + "   SET [class_id] = ?\n"
+                + "      ,[assignment_name] = ?\n"
+                + "      ,[description] = ?\n"
+                + "      ,[start_time] = ?\n"
+                + "      ,[end_time] = ?\n"
+                + " WHERE assignment_id = ?";
+
+        PreparedStatement statement = connect.prepareStatement(sql);
+        statement.setInt(1, assignment.getClassId());
+        statement.setString(2, assignment.getAssignmentName());
+        statement.setString(3, assignment.getDescription());
+        statement.setString(4, assignment.getStartTime());
+        statement.setString(5, assignment.getEndTime());
+        statement.setInt(6, userId);
+        statement.executeUpdate();
+
+    }
+
     public void insertAssignment(Assignment assignment) {
         try {
             String sql = "INSERT INTO [dbo].[Assignments]\n"
@@ -38,8 +58,7 @@ public class AssignmentDao extends DBContext {
                     + "           ,[start_time]\n"
                     + "           ,[end_time])"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?"
-                    ;
+                    + "           (?,?,?,?,?)";
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, assignment.getClassId());
             stm.setString(2, assignment.getAssignmentName());
@@ -141,18 +160,19 @@ public class AssignmentDao extends DBContext {
         }
         return list;
     }
+
     public List<Assignment> getAllByUser(int userId, int lessonId) {
         List<Assignment> list = new ArrayList<>();
-        String sql = "select a.* from Lessons l \n" +
-"               join Classes cl on cl.class_id = l.class_id\n" +
-"               join Class_User cu on cu.class_id = cu.class_id\n" +
-"              join Users u on u.user_id = cu.user_id\n" +
-"			  join Assignments a on a.assignment_id = cl.class_id\n" +
-"              where u.user_id =  ? and lesson_id = ?";
+        String sql = "select a.* from Lessons l \n"
+                + "               join Classes cl on cl.class_id = l.class_id\n"
+                + "               join Class_User cu on cu.class_id = cu.class_id\n"
+                + "              join Users u on u.user_id = cu.user_id\n"
+                + "			  join Assignments a on a.assignment_id = cl.class_id\n"
+                + "              where u.user_id =  ? and lesson_id = ?";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
-              statement.setInt(1, userId);
-                statement.setInt(2, lessonId);
+            statement.setInt(1, userId);
+            statement.setInt(2, lessonId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Assignment c = new Assignment(
