@@ -55,7 +55,7 @@
                                         <div class="card mb-4">
                                             <div class="card-body">
 
-                                                <a href="ViewCourseInfor?id=${c.courseId}" class="card-title"> ${c.courseName} --  ${c.description}</a> 
+                                                <a href="ViewCourseInfor?cid=${c.courseId}" class="card-title"> ${c.courseName} --  ${c.description}</a> 
                                                
 
 

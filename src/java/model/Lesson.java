@@ -64,4 +64,10 @@ public class Lesson {
     public void setLessonContent(String lessonContent) {
         this.lessonContent = lessonContent;
     }
+
+    @Override
+    public String toString() {
+        return "Lesson{" + "lessonId=" + lessonId + ", classId=" + classId + ", slot=" + slot + ", lessonContent=" + lessonContent + '}';
+    }
+    
 }

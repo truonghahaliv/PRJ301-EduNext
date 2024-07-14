@@ -29,6 +29,13 @@
             </a>
         </li>
          <li>
+            <a href="ListUserClass" class="nav-link sidebarBtn">
+                <i class="fa-solid fa-font-awesome pe-3" style="margin-right: 10px"></i>
+               User of Class
+            </a>
+        </li>
+        
+         <li>
             <a href="logout" class="nav-link sidebarBtn" >
                 <i class="fa-solid fa-setting pe-3" style="margin-right: 10px"></i>
                 Log Out
