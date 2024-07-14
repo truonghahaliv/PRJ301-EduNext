@@ -65,20 +65,46 @@ public class UserDao extends DBContext {
         return userList;
     }
 
+    public List<User> getAllStudents() {
+        List<User> userList = new ArrayList<>();
+        String sql = "select distinct  u.*\n"
+                + "from Users u join Class_User cu on u.user_id = cu.user_id\n"
+                + "join Classes c on c.class_id = cu.class_id\n"
+                + "where   u.role = 'student'";
+        try {
+            PreparedStatement statement = connect.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+
+                User user = new User(
+                        rs.getInt(1), // userId
+                        rs.getString(2), // username
+                        rs.getString(3), // password
+                        rs.getString(4), // email
+                        rs.getString(5) // role
+                );
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return userList;
+    }
+
     // Method to update user role based on user ID
     public void updateUser(int userId, User user) {
-        String sql = "UPDATE [dbo].[Users]\n" +
-"   SET [username] = ?\n" +
-"      ,[password] = ?\n" +
-"      ,[email] = ?\n" +
-"      ,[role] = ?\n" +
-" WHERE user_id = ?";
+        String sql = "UPDATE [dbo].[Users]\n"
+                + "   SET [username] = ?\n"
+                + "      ,[password] = ?\n"
+                + "      ,[email] = ?\n"
+                + "      ,[role] = ?\n"
+                + " WHERE user_id = ?";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
             statement.setString(1, user.getUsername());
-              statement.setString(2, user.getPassword());
-                statement.setString(3, user.getEmail());
-                  statement.setString(4, user.getRole());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getRole());
             statement.setInt(5, userId);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -163,6 +189,10 @@ public class UserDao extends DBContext {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
+    }
+    public static void main(String[] args) {
+        UserDao dao = new UserDao();
+        System.out.println(dao.getAllStudents());
     }
 
 }

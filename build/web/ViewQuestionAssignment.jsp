@@ -21,22 +21,46 @@
                 background-color: #ccc;
                 color: #17a2b8
             }
+             .bg-orange {
+            background-color: orange !important;
+        }
         </style>
 
     </head>
     <body>
-        <div class="d-flex">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-orange">
+            <a class="navbar-brand" href="#">EduNext</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container mt-5">
             <c:set var="lid" value="${id}"/> 
-            <div>
+            <c:if test="${teacher != null}">
+                <div>
                 <%@include file="SideBarTeacher.jsp" %>
             </div>
+            </c:if>
+            
             <div class="container" style="margin-top: -20px">
+                <c:if test="${teacher != null}">
+                    
+              
                 <div>
                     <div class="container">
                             
                         <a href="AddQuestionAssignment?aid=${aid}" class="btn  p-2" style="background: #58abff; color: white; margin-bottom: 45px;margin-top: 30px "  >Add New Question</a>
                     </div>
                 </div>
+                      </c:if>
                 <div class="container" style="margin-top: -30px">
                     <table class="table table-hover table-bordered">
                         <thead>
@@ -45,8 +69,10 @@
 
                                 <th scope="col"> Question Content</th>
                                 <th scope="col">Status</th>
-
-                                <th scope="col">Action</th>
+                                <c:if test="${teacher != null}">
+                                 <th scope="col">Action</th>
+                                </c:if>
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -57,25 +83,26 @@
                                     <td>${c.questionId}</td>                               
                                     <td>${c.questionContent}</td>
                                     <td>${c.status}</td>
-
+                                    <c:if test="${teacher != null}">
                                     <td>
 
                                         <div class="container mt-1">
-                                            <form action="UpdateQuestion" method="get" class="d-inline-block">
+                                            <form action="UpdateQuestionAssignment" method="get" class="d-inline-block">
                                                 <input value="${c.questionId}" name="id" type="hidden">
-                                                <input value="${lid}" name="lid" type="hidden">
+                                                <input value="${aid}" name="aid" type="hidden">
                                                 <button type="submit" class="btn btn-warning">Update</button>
                                             </form>
                                             <form onsubmit="return false;" class="d-inline-block">
                                                 <input value="${c.questionId}" name="id" type="hidden">
-                                                <input value="${lid}" name="lid" type="hidden">
-                                                <button type="button" class="btn btn-danger" onclick="confirmDelete('${id}', '${lid}')">Delete</button>
+                                                <input value="${aid}" name="aid" type="hidden">
+                                                <button type="button" class="btn btn-danger" onclick="confirmDelete('${id}', '${aid}')">Delete</button>
                                             </form>
                                         </div>
 
 
 
                                     </td>
+                                    </c:if>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -86,12 +113,12 @@
             </div>
         </div>
         <script>
-            function confirmDelete(id, lid) {
+            function confirmDelete(id, aid) {
 
                 var result = confirm("are you sure to delete id?");
                 if (result) {
 
-                    window.location.href = "DeleteQuestionSlot?id=" + id + "&lid=" + lid;
+                    window.location.href = "DeleteQuestionAssignment?id=" + id + "&aid=" + aid;
 
                 } else {
                     // Người dùng đã chọn Hủy bỏ, không làm gì cả

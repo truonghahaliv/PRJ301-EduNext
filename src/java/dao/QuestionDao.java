@@ -54,6 +54,25 @@ public class QuestionDao extends DBContext {
         }
     }
 
+    public void updateQuestion(int id, Question question) {
+        try {
+            String sql = "UPDATE [dbo].[Questions]\n"
+                    + "   SET [assignment_id] = ?\n"
+                    + "      ,[question_content] = ?\n"
+                    + "      ,[status] = ?\n"
+                    + " WHERE question_id = ?";
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, question.getAssignmentId());
+            stm.setString(2, question.getQuestionContent());
+
+            stm.setString(3, question.getStatus());
+            stm.setInt(4, id);
+            stm.executeQuery();
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
+
     public List<Question> paging(int page) {
         List<Question> list = new ArrayList<>();
         String sql = "select * from [Questions] order by question_id asc offset ? rows fetch next 7 rows only";
@@ -122,11 +141,11 @@ public class QuestionDao extends DBContext {
 
     public List<Question> getAll(int id) {
         List<Question> list = new ArrayList<>();
-        String sql = "select q.* from Questions q join Assignments a \n" +
-"                on q.assignment_id = a.assignment_id where a.assignment_id = ?";
+        String sql = "select q.* from Questions q join Assignments a \n"
+                + "                on q.assignment_id = a.assignment_id where a.assignment_id = ?";
         try {
             PreparedStatement statement = connect.prepareStatement(sql);
-               statement.setInt(1, id);
+            statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Question c = new Question(
