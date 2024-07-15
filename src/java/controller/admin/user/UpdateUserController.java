@@ -101,21 +101,11 @@ public class UpdateUserController extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        String role = request.getParameter("role");
-        String realRole = null;
         UserDao dao = new UserDao();
    
             int id = Integer.parseInt(request.getParameter("id"));
-            if (role.equals("admin")) {
-                realRole = "admin";
-
-            } else if (role.equals("teacher"))  {
-                realRole = "teacher";
-            }
-            else if (role.equals("student"))  {
-                realRole = "student";
-            }
-            dao.updateUser(id,new User( username, password, email, realRole));
+            
+            dao.updateUser(id,new User( username, password, email, "admin"));
             response.sendRedirect("listUser");
          
     }
