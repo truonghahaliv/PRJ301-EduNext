@@ -53,41 +53,7 @@
                             <label for="inputPassword4" style="font-weight: bold">Password</label>
                             <input type="password" class="form-control" id="inputPassword" placeholder="Password" required="" name="password" value="${user.password}">
                         </div>
-                        <c:if test="${user.role eq 'admin'}" >
-                            <div class="form-group col-md-5">
-                                <label for="role" style="font-weight: bold">Role</label>
-                                <select id="role" class="form-control" name="role" >
-                                    <option value="admin">Admin</option>
-                                    <option value="teacher">Teacher</option>
-                                    <option value="student">Student</option>
-
-                                </select>
-                            </div>
-                        </c:if>
-                        <c:if test="${user.role eq 'teacher'}" >
-                            <div class="form-group col-md-5">
-                                <label for="role" style="font-weight: bold">Role</label>
-                                <select id="role" class="form-control" name="role" >
-                                     <option value="teacher">Teacher</option>
-                                    <option value="admin">Admin</option>
-                                   
-                                    <option value="student">Student</option>
-
-                                </select>
-                            </div>
-                        </c:if>
-                        <c:if test="${user.role eq 'student'}" >
-                            <div class="form-group col-md-5">
-                                <label for="role" style="font-weight: bold">Role</label>
-                                <select id="role" class="form-control" name="role" >
-                                     <option value="student">Student</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="teacher">Teacher</option>
-                                   
-
-                                </select>
-                            </div>
-                        </c:if>
+                        
                     </div>
 
                     <button type="submit" class=" d-flex  btn btn-primary updateBtn">Add To System</button>
